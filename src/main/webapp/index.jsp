@@ -19,7 +19,7 @@
 					</div>
 					<h2 class="content-title">Even voorstellen...</h2>
 					<p class="content-block">
-						Mijn naam is Daniël van der Palm. Ik liep al vrij lang rond met verschillende toekomstdromen: afvallen, regelmatig sporten, 
+						Mijn naam is Dani&eacute;l van der Palm. Ik liep al vrij lang rond met verschillende toekomstdromen: afvallen, regelmatig sporten, 
 						gezonder eten, een instrument leren spelen, meer genieten van het leven, betere relaties vormen met vrienden en familie en een 
 						eigen bedrijfje starten. Kortom, ik wilde van alles ondernemen maar er was <b>altijd wel iets dat me tegen hield</b>. 
 					</p>
@@ -70,6 +70,9 @@
 					</div>
 					<div id="purchase" class="rotating">
 						<h3 class="content-title">E-book Kopen</h3>
+						<form method="post" action="/placeorder">
+							<input type="submit" value="koop" />
+						</form>
 					</div>
 				</aside>
 			</div>
