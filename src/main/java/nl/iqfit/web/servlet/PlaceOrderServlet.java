@@ -24,12 +24,15 @@ public class PlaceOrderServlet extends HttpServlet {
 
 	@Inject OrderFacade orderFacade;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.info("Placing new order");
 
-		request.getRequestDispatcher("/WEB-INF/views/payment/startpayment.jsp").forward(request, response);
+		// place order in db
+		
+		// call backend to prepare payment.
+
+		// process prepared payment details
+
+		// redirect client to bank page
 	}
 }

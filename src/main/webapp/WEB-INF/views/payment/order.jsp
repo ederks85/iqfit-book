@@ -14,14 +14,17 @@
 			<div id="content">
 				<section>
 					<h2 class="content-title">Betalen</h2>
+					<p>
+						Order overzicht hier!
+					</p>
 					<p class="content-block">
-						Je bestelling is geplaatst. Kies hieronder a.u.b. je gewenste betaalmethode. 
+						Kies hieronder a.u.b. je gewenste betaalmethode om het e-book te kopen. 
 					</p>
 				</section>
 				<aside>
 					<div id="newsletter">
 						<h3 class="content-title">Nieuwsbrief</h3>
-						<p  class="content-block">
+						<p class="content-block">
 							Ben je geïnteresseerd om ontwikkelingen te volgen via de nieuwsbrief? Vul dan hier je emailadres in:
 						</p>
 						<form>
