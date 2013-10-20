@@ -1,5 +1,5 @@
 CREATE TABLE customer (
-	id		bigint NOT NULL,
+	id		bigserial NOT NULL,
 	firstname	character varying(50),
 	middlename	character varying(10),
 	surname		character varying(50),
@@ -14,11 +14,12 @@ WITH (
 
 
 CREATE TABLE orders (
-	id		bigint NOT NULL,
+	id		bigserial NOT NULL,
 	customer_id	bigint REFERENCES customer(id),
 	ordernumber	character varying(129) NOT NULL,
 	orderdate	timestamp without time zone NOT NULL,
 	status		character varying(8) NOT NULL,
+	downloaded	boolean NOT NULL default 'false',
 
 	PRIMARY KEY (id),
 	UNIQUE (ordernumber)

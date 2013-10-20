@@ -27,6 +27,7 @@ public class OrderEntity {
 	private String orderNumber;
 	private Date orderDate;
 	private OrderStatus status;
+	private boolean downloaded;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public long getId() {
@@ -74,5 +75,14 @@ public class OrderEntity {
 
 	public void setStatus(OrderStatus status) {
 		this.status = status;
+	}
+
+	@NotNull
+	public boolean isDownloaded() {
+		return this.downloaded;
+	}
+
+	public void setDownloaded(boolean downloaded) {
+		this.downloaded = downloaded;
 	}
 }
