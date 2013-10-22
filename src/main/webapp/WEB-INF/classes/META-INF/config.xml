@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<system />
+	<properties fileName="${jboss.config.dir}/applications/iqfit-config.xml" />
+	<properties fileName="/META-INF/config/default-iqfit-config.xml" />
+</configuration>

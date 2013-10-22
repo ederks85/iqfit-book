@@ -1,4 +1,4 @@
-package nl.iqfit.logic.facade;
+package nl.iqfit.logic.payment;
 
 import java.util.Set;
 
@@ -6,11 +6,10 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import nl.iqfit.core.dto.BankDataDTO;
-import nl.iqfit.logic.payment.PaymentException;
 
 @Local
 @Stateless
-public interface PaymentFacade {
+public interface IDealPaymentHandler {
 
 	/**
 	 * Get the banks that are available for IDeal payments.

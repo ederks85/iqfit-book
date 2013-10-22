@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -20,6 +20,13 @@
 					<p class="content-block">
 						Kies hieronder a.u.b. je gewenste betaalmethode om het e-book te kopen. 
 					</p>
+					<form id="selectBankForm" name="selectBankForm" method="post" action="/placeorder">
+						<select required>
+							<c:forEach var="bank" items="${bankList}">
+								<option value="${bank.bankId}">${bank.bankName}</option>
+							</c:forEach>
+						</select>
+					</form>
 				</section>
 				<aside>
 					<div id="newsletter">

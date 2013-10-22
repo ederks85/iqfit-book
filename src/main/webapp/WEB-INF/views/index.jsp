@@ -70,7 +70,7 @@
 					</div>
 					<div id="purchase" class="rotating">
 						<h3 class="content-title">E-book Kopen</h3>
-						<form method="post" action="/placeorder">
+						<form method="post" action="/orderpage">
 							<input type="submit" value="koop" />
 						</form>
 					</div>
