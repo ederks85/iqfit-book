@@ -4,8 +4,7 @@
 
 	<payment>
 		<mollie>
-			<mollieUrl><![CDATA[https://secure.mollie.nl/xml/ideal]]></mollieUrl>
-			<mollieCommunicationMode>A</mollieCommunicationMode>
+			<mollieURL><![CDATA[https://secure.mollie.nl/xml/ideal]]></mollieURL>
 		</mollie>
 	</payment>
 </application>

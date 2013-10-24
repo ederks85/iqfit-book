@@ -9,19 +9,17 @@ public class IQFitConfig {
 	private final String environment;
 
 	private final String mollieURL;
-	private final String mollieCommunicationMode;
 
-	public IQFitConfig(Configuration configuration) {
+	IQFitConfig(Configuration configuration) {
 
 		this.environment = configuration.getString("environment");
 
-		this.mollieURL = configuration.getString("mollieURL");
-		this.mollieCommunicationMode = configuration.getString("mollieCommunicationMode");
+		this.mollieURL = configuration.getString("payment.mollie.mollieURL");
 	}
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	public String getEnvironment() {
@@ -30,9 +28,5 @@ public class IQFitConfig {
 
 	public String getMollieURL() {
 		return this.mollieURL;
-	}
-
-	public String getMollieCommunicationMode() {
-		return this.mollieCommunicationMode;
 	}
 }
