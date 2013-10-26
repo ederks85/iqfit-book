@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,12 +22,10 @@ import nl.iqfit.core.jaxb.Banks;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,16 +39,20 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 		try {
 			IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
 
-			String mollieUrl = config.getMollieURL();
+			//FIXME update configuration
+			URIBuilder uriBuilder = new URIBuilder()
+				.setScheme("https")
+				.setHost("secure.mollie.nl")
+				.setPath("/xml/ideal")
+				.addParameter("a", "banklist");
 
-			HttpClient client = new DefaultHttpClient();
+			final URI idealBankRetrievalURI = uriBuilder.build();
+			logger.debug("URL for retrieving IDeal bank list from Mollie: {}", idealBankRetrievalURI.toString());
 
-			//TODO uribuilder (v4.3.1)
-			HttpGet get = new HttpGet(mollieUrl + "?a=banklist");
+			HttpGet get = new HttpGet(idealBankRetrievalURI);
 
-			logger.debug("URL for retrieving IDeal bank list from Mollie: {}", get.getURI());
-
-			HttpResponse httpResponse = client.execute(get);
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpResponse httpResponse = httpClient.execute(get);
 			logger.debug("HTTP Response from retrieving IDeal bank list from Mollie: {}", httpResponse.getStatusLine().getStatusCode());
 
 			final int statusCode = httpResponse.getStatusLine().getStatusCode();
@@ -78,7 +81,7 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 				bankDataDTOs.add(new BankDataDTO(bank.getBankId(), bank.getBankName()));
 			}
 			return bankDataDTOs;
-		} catch (ConfigurationException | JAXBException | IOException e) {
+		} catch (ConfigurationException | JAXBException | IOException | URISyntaxException e) {
 			final String message = "Error in OrderPageServlet";
 			logger.error(message, e);
 			throw new PaymentException(message, e);
