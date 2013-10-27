@@ -4,7 +4,14 @@
 
 	<payment>
 		<mollie>
-			<mollieURL><![CDATA[https://secure.mollie.nl/xml/ideal]]></mollieURL>
+			<mollieURLScheme>https</mollieURLScheme>
+			<mollieURLHost>secure.mollie.nl</mollieURLHost>
+			<mollieURLPath><![CDATA[/xml/ideal]]></mollieURLPath>
+			<mollieURL><![CDATA[${application.payment.mollieURLScheme}://${application.payment.mollieURLHost}${application.payment.mollieURLPath}]]></mollieURL>
+
+			<modes paramName="a">
+				<idealBankList paramValue="banklist" />
+			</modes>
 		</mollie>
 	</payment>
 </application>

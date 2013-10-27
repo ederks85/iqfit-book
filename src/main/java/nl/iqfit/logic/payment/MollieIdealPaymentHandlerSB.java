@@ -39,11 +39,10 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 		try {
 			IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
 
-			//FIXME update configuration
 			URIBuilder uriBuilder = new URIBuilder()
-				.setScheme("https")
-				.setHost("secure.mollie.nl")
-				.setPath("/xml/ideal")
+				.setScheme(config.getMollieURLScheme())
+				.setHost(config.getMollieURLHost())
+				.setPath(config.getMollieURLPath())
 				.addParameter("a", "banklist");
 
 			final URI idealBankRetrievalURI = uriBuilder.build();
@@ -65,7 +64,6 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 			Unmarshaller u = jbc.createUnmarshaller();
 			Banks foundBanks =  (Banks)u.unmarshal(new InputStreamReader(httpResponse.getEntity().getContent()));
 
-			//FIXME why dafuq werkt dit niet??
 			if (logger.isDebugEnabled()) {
 				StringWriter sw = new StringWriter();
 
