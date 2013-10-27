@@ -20,6 +20,7 @@ import nl.iqfit.core.jaxb.Bank;
 import nl.iqfit.core.jaxb.Banks;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.lang.Validate;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -43,7 +44,7 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 				.setScheme(config.getMollieURLScheme())
 				.setHost(config.getMollieURLHost())
 				.setPath(config.getMollieURLPath())
-				.addParameter("a", "banklist");
+				.addParameter(config.getMollieTestModeParameter().getName(), config.getMollieTestModeParameter().getValue());
 
 			final URI idealBankRetrievalURI = uriBuilder.build();
 			logger.debug("URL for retrieving IDeal bank list from Mollie: {}", idealBankRetrievalURI.toString());
@@ -63,6 +64,8 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 			JAXBContext jbc = JAXBContext.newInstance(Banks.class, Bank.class);
 			Unmarshaller u = jbc.createUnmarshaller();
 			Banks foundBanks =  (Banks)u.unmarshal(new InputStreamReader(httpResponse.getEntity().getContent()));
+
+			Validate.notNull(foundBanks, "Error while retrieveing IDeal bank list: no banks received");
 
 			if (logger.isDebugEnabled()) {
 				StringWriter sw = new StringWriter();
