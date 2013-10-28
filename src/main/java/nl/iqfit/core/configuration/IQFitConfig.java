@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class IQFitConfig {
 
 	private final String environment;
+	private final boolean testEnvironment;
 
 	private final String mollieURLScheme;
 	private final String mollieURLHost;
@@ -20,6 +21,7 @@ public class IQFitConfig {
 	IQFitConfig(Configuration configuration) {
 
 		this.environment = configuration.getString("environment");
+		this.testEnvironment = configuration.getBoolean("testEnvironment");
 
 		this.mollieURLScheme = configuration.getString("payment.mollie.mollieURLScheme");
 		this.mollieURLHost = configuration.getString("payment.mollie.mollieURLHost");
@@ -34,6 +36,14 @@ public class IQFitConfig {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
+	public String getEnvironment() {
+		return this.environment;
+	}
+
+	public boolean isTestEnvironment() {
+		return this.testEnvironment;
+	}
+
 	public String getMollieURLScheme() {
 		return this.mollieURLScheme;
 	}
@@ -44,10 +54,6 @@ public class IQFitConfig {
 
 	public String getMollieURLPath() {
 		return this.mollieURLPath;
-	}
-
-	public String getEnvironment() {
-		return this.environment;
 	}
 
 	public String getMollieURL() {
