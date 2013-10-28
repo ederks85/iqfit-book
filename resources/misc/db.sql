@@ -49,3 +49,13 @@ ALTER TABLE orders
   OWNER TO postgres;
 GRANT ALL ON TABLE orders TO postgres;
 GRANT SELECT, UPDATE, INSERT, REFERENCES ON TABLE orders TO role_iqfit;
+
+ALTER TABLE customer_id_seq
+  OWNER TO postgres;
+GRANT ALL ON TABLE customer_id_seq TO role_iqfit;
+REVOKE ALL ON TABLE customer_id_seq FROM postgres;
+
+ALTER TABLE orders_id_seq
+  OWNER TO postgres;
+GRANT ALL ON TABLE orders_id_seq TO postgres;
+GRANT ALL ON TABLE orders_id_seq TO role_iqfit;

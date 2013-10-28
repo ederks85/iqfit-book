@@ -29,6 +29,10 @@ public class OrderEntity {
 	private OrderStatus status;
 	private boolean downloaded;
 
+	public OrderEntity() {
+		this.setStatus(OrderStatus.OPEN);
+	}
+
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public long getId() {
 		return this.id;

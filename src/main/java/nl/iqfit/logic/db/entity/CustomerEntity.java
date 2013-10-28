@@ -72,7 +72,7 @@ public class CustomerEntity {
 		this.emailAddress = emailAddress;
 	}
 
-	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="customer_id", referencedColumnName="id")
 	public Collection<OrderEntity> getOrders() {
 		return orders;

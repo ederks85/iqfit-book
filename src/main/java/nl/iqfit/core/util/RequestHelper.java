@@ -15,6 +15,17 @@ import org.apache.commons.lang.Validate;
  */
 public class RequestHelper {
 
+	public String getRequestParameter(HttpServletRequest request, String paramName) {
+		Validate.notNull(request, "Request is null.");
+		Validate.notNull(paramName, "paramName is null.");
+
+		final String paramValue = request.getParameter(paramName);
+		if (paramValue == null) {
+			throw new IllegalArgumentException("Requestparameter " + paramName + " was not found.");
+		}
+		return paramValue;
+	}
+
 	public String getRequestParametersToString(final HttpServletRequest request) {
 		Validate.notNull(request, "Request is null.");
 
