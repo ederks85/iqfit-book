@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nl.iqfit.core.util.RequestHelper;
 import nl.iqfit.logic.facade.OrderFacade;
 
 import org.slf4j.Logger;
@@ -25,7 +26,9 @@ public class PlaceOrderServlet extends HttpServlet {
 	@Inject OrderFacade orderFacade;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		logger.info("Placing new order");
+
+		final RequestHelper rh = new RequestHelper();
+		logger.info("Received new order with parameters: {}", rh.getRequestParametersToString(request));
 
 		// place order in db
 		
@@ -34,5 +37,6 @@ public class PlaceOrderServlet extends HttpServlet {
 		// process prepared payment details
 
 		// redirect client to bank page
+		response.sendRedirect(response.encodeRedirectURL("/bank"));
 	}
 }

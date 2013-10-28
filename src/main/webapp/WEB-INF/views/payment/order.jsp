@@ -21,11 +21,32 @@
 						Kies hieronder a.u.b. je gewenste betaalmethode om het e-book te kopen. 
 					</p>
 					<form id="selectBankForm" name="selectBankForm" method="post" action="/placeorder">
-						<select required>
+						<br class="clearBoth" />
+						<label for="firstName">Voornaam:</label>
+						<input class="formField" type="text" id="firstName" name="firstName" />
+						<br class="clearBoth" />
+
+						<label for="middleName">Tussenvoegsel:</label>
+						<input class="formField" type="text" id="middleName" name="middleName" />
+						<br class="clearBoth" />
+
+						<label for="surName">Achternaam:</label>
+						<input class="formField" type="text" id="surName" name="surName" />
+						<br class="clearBoth" />
+
+						<label for="emailAddress">Email adres:</label>
+						<input class="formField" type="email" id="emailAddress" name="emailAddress" />
+						<br class="clearBoth" />
+
+						<label for="bankList">Kies uw bank:</label>
+						<select id="bankList" name="bankList" required>
 							<c:forEach var="bank" items="${bankList}">
 								<option value="${bank.bankId}">${bank.bankName}</option>
 							</c:forEach>
 						</select>
+						<br class="clearBoth" />
+
+						<input type="submit" value="Verzenden" />
 					</form>
 				</section>
 				<aside>

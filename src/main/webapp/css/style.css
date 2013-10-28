@@ -174,3 +174,24 @@ footer {
 	font-weight: bold;
 	top: 135px;
 }
+
+.formField {
+	position: relative;
+	float: left;
+	clear: right;
+}
+
+#selectBankForm {
+	position: relative;
+	width: 700px;
+}
+
+#selectBankForm label {
+	position: relative;
+	float: left;
+	clear: none;
+}
+
+.clearBoth {
+	clear: both;
+}
