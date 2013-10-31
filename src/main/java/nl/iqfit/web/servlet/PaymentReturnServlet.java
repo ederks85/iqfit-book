@@ -17,6 +17,6 @@ public class PaymentReturnServlet extends HttpServlet {
 
 		// retrieve current status of provided order
 
-		// if payment successfull, redirect to 
+		// if payment successful, redirect to 
 	}
 }

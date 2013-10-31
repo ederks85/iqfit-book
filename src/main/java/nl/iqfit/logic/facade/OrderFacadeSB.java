@@ -13,9 +13,16 @@ public class OrderFacadeSB implements OrderFacade {
 	@Inject OrderHandler orderHandler;
 
 	@Override
-	public OrderDataDTO placeNewOrder(final OrderDataDTO orderData) throws OrderException {
+	public OrderDataDTO insertOrder(final OrderDataDTO orderData) throws OrderException {
 		Validate.notNull(orderData, "OrderData is null.");
 
 		return this.orderHandler.placeNewOrder(orderData);
+	}
+
+	@Override
+	public OrderDataDTO updateOrder(OrderDataDTO orderData) throws OrderException {
+		Validate.notNull(orderData, "OrderData is null.");
+
+		return this.orderHandler.updateOrder(orderData);
 	}
 }

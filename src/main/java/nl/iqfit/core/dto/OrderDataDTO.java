@@ -2,6 +2,8 @@ package nl.iqfit.core.dto;
 
 import java.util.Date;
 
+import nl.iqfit.logic.db.entity.OrderStatus;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -20,6 +22,7 @@ public class OrderDataDTO {
 
 	private String orderNumber;
 	private Date orderDate;
+	private OrderStatus orderStatus;
 
 	public String getFirstName() {
 		return this.firstName;
@@ -67,6 +70,14 @@ public class OrderDataDTO {
 
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return this.orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	@Override

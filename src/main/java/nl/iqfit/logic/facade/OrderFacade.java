@@ -24,5 +24,16 @@ public interface OrderFacade {
 	 * @return an {@code OrderDataDTO} that contains data associated with the newly placed order. Never null.
 	 * @throws OrderException when placing the new order fails.
 	 */
-	OrderDataDTO placeNewOrder(OrderDataDTO orderData) throws OrderException;
+	OrderDataDTO insertOrder(OrderDataDTO orderData) throws OrderException;
+
+	/**
+	 * Update an existing order with the details provided.
+	 * 
+	 * @param orderData	The updated order data.
+	 * 
+	 * @return The order data, after it has been persisted.
+	 * 
+	 * @throws OrderException when updating the order fails.
+	 */
+	OrderDataDTO updateOrder(OrderDataDTO orderData) throws OrderException;
 }

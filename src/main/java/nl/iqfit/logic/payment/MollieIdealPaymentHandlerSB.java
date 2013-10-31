@@ -40,6 +40,7 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 		try {
 			IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
 
+			//TODO params url encoding omdat Mollie dat voorschrijft
 			URIBuilder uriBuilder = new URIBuilder()
 				.setScheme(config.getMollieURLScheme())
 				.setHost(config.getMollieURLHost())

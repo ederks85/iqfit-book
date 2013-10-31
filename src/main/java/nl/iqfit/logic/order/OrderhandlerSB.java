@@ -38,7 +38,7 @@ public class OrderhandlerSB implements OrderHandler {
 		logger.info("Persisting new order: {}", orderData);
 
 		// Create a unique order number
-		String uuid = UUID.randomUUID().toString();
+		String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
 		orderData.setOrderNumber(uuid);
 
 		// Set order date (now)
@@ -64,6 +64,24 @@ public class OrderhandlerSB implements OrderHandler {
 		this.entityManager.merge(customer);
 		
 		// Return the order as it has been persisted for possible handling by the caller
+		return orderData;
+	}
+
+	@Override
+	public OrderDataDTO updateOrder(final OrderDataDTO orderData) throws OrderException {
+		Validate.notNull(orderData, "OrderData is null.");
+
+		logger.info("Updating order: {}", orderData);
+
+		final OrderEntity existingOrderData = this.orderDAO.getOrderByOrderNumber(orderData.getOrderNumber());
+		if (existingOrderData == null) {
+			throw new IllegalStateException("Order with order number " + orderData.getOrderNumber() + " was not found.");
+		}
+	
+		existingOrderData.setOrderNumber(orderData.getOrderNumber());
+		existingOrderData.setOrderDate(orderData.getOrderDate());
+		existingOrderData.setStatus(orderData.getOrderStatus());
+
 		return orderData;
 	}
 }

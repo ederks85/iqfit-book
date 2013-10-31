@@ -24,4 +24,15 @@ public interface OrderHandler {
 	 * @throws OrderException when placing the new order fails.
 	 */
 	OrderDataDTO placeNewOrder(OrderDataDTO orderData) throws OrderException;
+
+	/**
+	 * Update an existing order with the details provided.
+	 * 
+	 * @param orderData	The updated order data.
+	 * 
+	 * @return The order data, after it has been persisted.
+	 * 
+	 * @throws OrderException when updating the order fails.
+	 */
+	OrderDataDTO updateOrder(OrderDataDTO orderData) throws OrderException;
 }
