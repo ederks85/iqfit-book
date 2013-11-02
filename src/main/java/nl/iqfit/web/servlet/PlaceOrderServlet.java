@@ -38,7 +38,7 @@ public class PlaceOrderServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		final RequestHelper rh = new RequestHelper();
-		logger.info("Received new order with parameters: {}", rh.getRequestParametersToString(request));
+		logger.info("Recieved new order with parameters: {}", rh.getRequestParametersToString(request));
 
 		final String firstName		= rh.getRequestParameter(request, "firstName");
 		final String middleName		= rh.getRequestParameter(request, "middleName");

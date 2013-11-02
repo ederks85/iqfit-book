@@ -66,7 +66,7 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 			Unmarshaller u = jbc.createUnmarshaller();
 			Banks foundBanks =  (Banks)u.unmarshal(new InputStreamReader(httpResponse.getEntity().getContent()));
 
-			Validate.notNull(foundBanks, "Error while retrieveing IDeal bank list: no banks received");
+			Validate.notNull(foundBanks, "Error while retrieveing IDeal bank list: no banks recieved");
 
 			if (logger.isDebugEnabled()) {
 				StringWriter sw = new StringWriter();
