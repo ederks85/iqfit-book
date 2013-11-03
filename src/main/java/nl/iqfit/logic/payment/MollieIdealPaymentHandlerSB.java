@@ -47,6 +47,10 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 				.setPath(config.getMollieURLPath())
 				.addParameter(URLEncoder.encode(config.getMollieBankListModeParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieBankListModeParameter().getValue(), "UTF-8"));
 
+			if (config.isTestEnvironment()) {
+				uriBuilder.addParameter(URLEncoder.encode(config.getMollieTestModeParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieTestModeParameter().getValue(), "UTF-8"));
+			}
+
 			final URI idealBankRetrievalURI = uriBuilder.build();
 			logger.debug("URL for retrieving IDeal bank list from Mollie: {}", idealBankRetrievalURI.toString());
 

@@ -11,6 +11,9 @@
 			<mollieURL><![CDATA[${application.payment.mollieURLScheme}://${application.payment.mollieURLHost}${application.payment.mollieURLPath}]]></mollieURL>
 
 			<modes>
+				<mode>
+					<test paramName="testmode" paramValue="true" /> 
+				</mode>
 				<mode paramName="a">
 					<idealBankList paramValue="banklist" />
 				</mode>
