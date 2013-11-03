@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,12 +41,11 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 		try {
 			IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
 
-			//TODO params url encoding omdat Mollie dat voorschrijft
 			URIBuilder uriBuilder = new URIBuilder()
 				.setScheme(config.getMollieURLScheme())
 				.setHost(config.getMollieURLHost())
 				.setPath(config.getMollieURLPath())
-				.addParameter(config.getMollieTestModeParameter().getName(), config.getMollieTestModeParameter().getValue());
+				.addParameter(URLEncoder.encode(config.getMollieTestModeParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieTestModeParameter().getValue(), "UTF-8"));
 
 			final URI idealBankRetrievalURI = uriBuilder.build();
 			logger.debug("URL for retrieving IDeal bank list from Mollie: {}", idealBankRetrievalURI.toString());
