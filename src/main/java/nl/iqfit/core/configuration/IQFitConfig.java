@@ -16,7 +16,7 @@ public class IQFitConfig {
 	private final String mollieURLPath;
 	private final String mollieURL;
 
-	private final NameValuePair mollieTestModeParameter;
+	private final NameValuePair mollieBankListModeParameter;
 
 	IQFitConfig(Configuration configuration) {
 
@@ -28,7 +28,7 @@ public class IQFitConfig {
 		this.mollieURLPath = configuration.getString("payment.mollie.mollieURLPath");
 		this.mollieURL = configuration.getString("payment.mollie.mollieURL");
 
-		this.mollieTestModeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes[@paramName]"), configuration.getString("payment.mollie.modes.idealBankList[@paramValue]"));
+		this.mollieBankListModeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(0)[@paramName]"), configuration.getString("payment.mollie.modes.mode(0).idealBankList[@paramValue]"));
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class IQFitConfig {
 		return this.mollieURL;
 	}
 
-	public NameValuePair getMollieTestModeParameter() {
-		return this.mollieTestModeParameter;
+	public NameValuePair getMollieBankListModeParameter() {
+		return this.mollieBankListModeParameter;
 	}
 }

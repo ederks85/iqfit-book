@@ -10,8 +10,10 @@
 			<mollieURLPath><![CDATA[/xml/ideal]]></mollieURLPath>
 			<mollieURL><![CDATA[${application.payment.mollieURLScheme}://${application.payment.mollieURLHost}${application.payment.mollieURLPath}]]></mollieURL>
 
-			<modes paramName="a">
-				<idealBankList paramValue="banklist" />
+			<modes>
+				<mode paramName="a">
+					<idealBankList paramValue="banklist" />
+				</mode>
 			</modes>
 		</mollie>
 	</payment>
