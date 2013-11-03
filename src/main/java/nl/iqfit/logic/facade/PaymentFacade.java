@@ -32,5 +32,5 @@ public interface PaymentFacade {
 	 * 
 	 * @throws PaymentException when initializing the payment fails.
 	 */
-	String initializePayment(OrderDataDTO order, BankDataDTO bank) throws PaymentException;
+	String initializeIdealPayment(OrderDataDTO order, BankDataDTO bank) throws PaymentException;
 }

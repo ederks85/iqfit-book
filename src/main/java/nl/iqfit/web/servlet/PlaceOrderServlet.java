@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import nl.iqfit.core.dto.BankDataDTO;
 import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.core.util.RequestHelper;
-import nl.iqfit.logic.db.entity.OrderStatus;
 import nl.iqfit.logic.facade.OrderFacade;
 import nl.iqfit.logic.facade.PaymentFacade;
 import nl.iqfit.logic.order.OrderException;
@@ -91,20 +90,9 @@ public class PlaceOrderServlet extends HttpServlet {
 		// prepare the IDeal payment at the payment provider.
 		final String redirectUrl;
 		try {
-			redirectUrl = this.paymentFacade.initializePayment(orderData, bank);
+			redirectUrl = this.paymentFacade.initializeIdealPayment(orderData, bank);
 			logger.info("Recieved redirectUrl {} for order {} and bank {}.", new Object[]{redirectUrl, orderData, bank});
 		} catch (PaymentException e) {
-			final String message = "Error while placing new order";
-
-			logger.error(message, e);
-			throw new ServletException(message, e);
-		}
-
-		// update payment to "payment initialized status"
-		try {
-			orderData.setOrderStatus(OrderStatus.PAY_INIT);
-			this.orderFacade.updateOrder(orderData);
-		} catch (OrderException e) {
 			final String message = "Error while placing new order";
 
 			logger.error(message, e);

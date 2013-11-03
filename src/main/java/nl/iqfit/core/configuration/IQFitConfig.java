@@ -20,6 +20,18 @@ public class IQFitConfig {
 
 	private final NameValuePair mollieBankListModeParameter;
 
+	private final NameValuePair mollieFetchModeParameter;
+	private final NameValuePair mollieFetchModePartnerIdParameter;
+	private final NameValuePair mollieFetchModeRequestAmountParameter;
+	private final NameValuePair mollieFetchModeBankIdParameter;
+	private final NameValuePair mollieFetchModeDescriptionParameter;
+	private final NameValuePair mollieFetchModeLocalAfterPaymentReportURLParameter;
+	private final NameValuePair mollieFetchModeLocalAfterPaymentClientReturnURLParameter;
+	private final NameValuePair mollieFetchModeProfileKeyParameter;
+	private final NameValuePair mollieFetchModeTransactionIdParameter;
+	private final NameValuePair mollieFetchModeResponseAmountParameter;
+	private final NameValuePair mollieFetchModeRemoteStartPaymentClientRedirectURLParameter;
+
 	IQFitConfig(Configuration configuration) {
 
 		this.environment = configuration.getString("environment");
@@ -33,6 +45,18 @@ public class IQFitConfig {
 		this.mollieTestModeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(0).test[@paramName]"), configuration.getString("payment.mollie.modes.mode(0).test[@paramValue]"));
 
 		this.mollieBankListModeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(1)[@paramName]"), configuration.getString("payment.mollie.modes.mode(1).idealBankList[@paramValue]"));
+
+		this.mollieFetchModeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(1)[@paramName]"), configuration.getString("payment.mollie.modes.mode(1).fetch[@paramValue]"));
+		this.mollieFetchModePartnerIdParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).partnerId[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).partnerId[@paramValue]"));
+		this.mollieFetchModeRequestAmountParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).requestAmount[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).requestAmount[@paramValue]"));
+		this.mollieFetchModeBankIdParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).bankId[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).bankId[@paramValue]"));
+		this.mollieFetchModeDescriptionParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).description[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).description[@paramValue]"));
+		this.mollieFetchModeLocalAfterPaymentReportURLParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).localAfterPaymentReportURL[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).localAfterPaymentReportURL[@paramValue]"));
+		this.mollieFetchModeLocalAfterPaymentClientReturnURLParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).localAfterPaymentClientReturnURL[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).localAfterPaymentClientReturnURL[@paramValue]"));
+		this.mollieFetchModeProfileKeyParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).profileKey[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).profileKey[@paramValue]"));
+		this.mollieFetchModeTransactionIdParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).transactionId[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).transactionId[@paramValue]"));
+		this.mollieFetchModeResponseAmountParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).responseAmount[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).responseAmount[@paramValue]"));
+		this.mollieFetchModeRemoteStartPaymentClientRedirectURLParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).remoteStartPaymentClientRedirectURL[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).remoteStartPaymentClientRedirectURL[@paramValue]"));
 	}
 
 	@Override
@@ -70,5 +94,49 @@ public class IQFitConfig {
 
 	public NameValuePair getMollieBankListModeParameter() {
 		return this.mollieBankListModeParameter;
+	}
+
+	public NameValuePair getMollieFetchModeParameter() {
+		return this.mollieFetchModeParameter;
+	}
+
+	public NameValuePair getMollieFetchModePartnerIdParameter() {
+		return this.mollieFetchModePartnerIdParameter;
+	}
+
+	public NameValuePair getMollieFetchModeRequestAmountParameter() {
+		return this.mollieFetchModeRequestAmountParameter;
+	}
+
+	public NameValuePair getMollieFetchModeBankIdParameter() {
+		return this.mollieFetchModeBankIdParameter;
+	}
+
+	public NameValuePair getMollieFetchModeDescriptionParameter() {
+		return this.mollieFetchModeDescriptionParameter;
+	}
+
+	public NameValuePair getMollieFetchModeLocalAfterPaymentReportURLParameter() {
+		return this.mollieFetchModeLocalAfterPaymentReportURLParameter;
+	}
+
+	public NameValuePair getMollieFetchModeLocalAfterPaymentClientReturnURLParameter() {
+		return this.mollieFetchModeLocalAfterPaymentClientReturnURLParameter;
+	}
+
+	public NameValuePair getMollieFetchModeProfileKeyParameter() {
+		return this.mollieFetchModeProfileKeyParameter;
+	}
+
+	public NameValuePair getMollieFetchModeTransactionIdParameter() {
+		return this.mollieFetchModeTransactionIdParameter;
+	}
+
+	public NameValuePair getMollieFetchModeResponseAmountParameter() {
+		return this.mollieFetchModeResponseAmountParameter;
+	}
+
+	public NameValuePair getMollieFetchModeRemoteStartPaymentClientRedirectURLParameter() {
+		return this.mollieFetchModeRemoteStartPaymentClientRedirectURLParameter;
 	}
 }

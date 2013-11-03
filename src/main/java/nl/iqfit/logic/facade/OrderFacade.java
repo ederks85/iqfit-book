@@ -32,8 +32,6 @@ public interface OrderFacade {
 	 * @param orderData	The updated order data.
 	 * 
 	 * @return The order data, after it has been persisted.
-	 * 
-	 * @throws OrderException when updating the order fails.
 	 */
-	OrderDataDTO updateOrder(OrderDataDTO orderData) throws OrderException;
+	OrderDataDTO updateOrder(OrderDataDTO orderData);
 }

@@ -20,7 +20,7 @@ public class OrderFacadeSB implements OrderFacade {
 	}
 
 	@Override
-	public OrderDataDTO updateOrder(OrderDataDTO orderData) throws OrderException {
+	public OrderDataDTO updateOrder(OrderDataDTO orderData) {
 		Validate.notNull(orderData, "OrderData is null.");
 
 		return this.orderHandler.updateOrder(orderData);

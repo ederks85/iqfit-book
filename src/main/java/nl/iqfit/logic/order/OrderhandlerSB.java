@@ -68,7 +68,7 @@ public class OrderhandlerSB implements OrderHandler {
 	}
 
 	@Override
-	public OrderDataDTO updateOrder(final OrderDataDTO orderData) throws OrderException {
+	public OrderDataDTO updateOrder(final OrderDataDTO orderData) {
 		Validate.notNull(orderData, "OrderData is null.");
 
 		logger.info("Updating order: {}", orderData);
@@ -81,6 +81,7 @@ public class OrderhandlerSB implements OrderHandler {
 		existingOrderData.setOrderNumber(orderData.getOrderNumber());
 		existingOrderData.setOrderDate(orderData.getOrderDate());
 		existingOrderData.setStatus(orderData.getOrderStatus());
+		existingOrderData.setTransactionId(orderData.getTransactionId());
 
 		return orderData;
 	}

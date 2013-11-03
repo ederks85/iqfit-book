@@ -25,6 +25,7 @@ public class OrderEntity {
 	private long id;
 	private long customerId;
 	private String orderNumber;
+	private String transactionId;
 	private Date orderDate;
 	private OrderStatus status;
 	private boolean downloaded;
@@ -59,6 +60,15 @@ public class OrderEntity {
 
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
+	}
+
+	@Column(name="transaction_id")
+	public String getTransactionId() {
+		return this.transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 
 	@NotNull

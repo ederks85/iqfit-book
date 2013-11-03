@@ -39,7 +39,7 @@
 						<br class="clearBoth" />
 
 						<label for="bankList">Kies uw bank:</label>
-						<select id="bankList" name="bankList" required>
+						<select id="bankList" name="bankList">
 							<c:forEach var="bank" items="${bankList}">
 								<option value="${bank.bankId}">${bank.bankName}</option>
 							</c:forEach>

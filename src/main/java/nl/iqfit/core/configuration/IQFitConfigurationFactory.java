@@ -14,16 +14,23 @@ public class IQFitConfigurationFactory {
 	private static final Logger logger = LoggerFactory.getLogger(IQFitConfigurationFactory.class);
 
 	//TODO optimize this in static initialization
-	public IQFitConfig getIQFitConfig() throws ConfigurationException {
+	public IQFitConfig getIQFitConfig() {
 		URL configLocation = ConfigurationUtils.locate("META-INF/config.xml");
 
-		DefaultConfigurationBuilder cf = new DefaultConfigurationBuilder(configLocation);
-		Configuration config = cf.getConfiguration(true);
+		try {
+			DefaultConfigurationBuilder cf = new DefaultConfigurationBuilder(configLocation);
+			Configuration config = cf.getConfiguration(true);
 
-		cf.setThrowExceptionOnMissing(true);
+			cf.setThrowExceptionOnMissing(true);
 
-		logger.debug("Loaded configuration:\n{}", ConfigurationUtils.toString(config));
+			logger.debug("Loaded configuration:\n{}", ConfigurationUtils.toString(config));
 
-		return new IQFitConfig(config);
+			return new IQFitConfig(config);
+		} catch (ConfigurationException e) {
+			final String message = "Error while building IQFit configuration";
+
+			logger.error(message, e);
+			throw new RuntimeException(message, e);
+		}
 	}
 }

@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -17,10 +18,15 @@ import javax.xml.bind.Unmarshaller;
 import nl.iqfit.core.configuration.IQFitConfig;
 import nl.iqfit.core.configuration.IQFitConfigurationFactory;
 import nl.iqfit.core.dto.BankDataDTO;
+import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.core.jaxb.Bank;
 import nl.iqfit.core.jaxb.Banks;
+import nl.iqfit.core.jaxb.MollieFetchModeResponse;
+import nl.iqfit.logic.db.entity.OrderStatus;
+import nl.iqfit.logic.facade.OrderFacade;
+import nl.iqfit.logic.order.OrderException;
 
-import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -34,6 +40,8 @@ import org.slf4j.LoggerFactory;
 public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(MollieIdealPaymentHandlerSB.class);
+
+	@Inject OrderFacade orderFacade;
 
 	@Override
 	public Set<BankDataDTO> getIdealBankList() throws PaymentException {
@@ -87,8 +95,93 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 				bankDataDTOs.add(new BankDataDTO(bank.getBankId(), bank.getBankName()));
 			}
 			return bankDataDTOs;
-		} catch (ConfigurationException | JAXBException | IOException | URISyntaxException e) {
+		} catch (JAXBException | IOException | URISyntaxException e) {
 			final String message = "Error in OrderPageServlet";
+			logger.error(message, e);
+			throw new PaymentException(message, e);
+		}
+	}
+
+	@Override
+	public String initializeIdealPayment(final OrderDataDTO order, final BankDataDTO bank) throws PaymentException {
+		Validate.notNull(order, "Order is null.");
+		Validate.notNull(bank, "Bank is null.");
+
+		logger.info("Initializing payment for order {} at bank {}.", order, bank);
+
+		try {
+			final IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
+
+			final URIBuilder uriBuilder = new URIBuilder()
+				.setScheme(config.getMollieURLScheme())
+				.setHost(config.getMollieURLHost())
+				.setPath(config.getMollieURLPath())
+				.addParameter(URLEncoder.encode(config.getMollieFetchModeParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieFetchModePartnerIdParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModePartnerIdParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieFetchModeRequestAmountParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeRequestAmountParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieFetchModeBankIdParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeBankIdParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieFetchModeDescriptionParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeDescriptionParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieFetchModeLocalAfterPaymentReportURLParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeLocalAfterPaymentReportURLParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieFetchModeLocalAfterPaymentClientReturnURLParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeLocalAfterPaymentClientReturnURLParameter().getValue(), "UTF-8"));
+
+			final URI mollieInitilizePaymentURL = uriBuilder.build();
+			logger.debug("URL for initializing payment at Mollie: {}", mollieInitilizePaymentURL.toString());
+
+			HttpGet get = new HttpGet(mollieInitilizePaymentURL);
+
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpResponse httpResponse = httpClient.execute(get);
+			logger.debug("HTTP Response from initializing payment at Mollie: {}", httpResponse.getStatusLine().getStatusCode());
+
+			final int statusCode = httpResponse.getStatusLine().getStatusCode();
+			if (statusCode != HttpStatus.SC_OK) {
+				throw new PaymentException("Unexpected http status code while initializing payment at Mollie: " + statusCode);
+			}
+
+			// Unmarshall XML response to MollieFetchModeResponse objects
+			JAXBContext jbc = JAXBContext.newInstance(MollieFetchModeResponse.class);
+			Unmarshaller u = jbc.createUnmarshaller();
+			MollieFetchModeResponse response =  (MollieFetchModeResponse)u.unmarshal(new InputStreamReader(httpResponse.getEntity().getContent()));
+
+			Validate.notNull(response, "Error while initializing payment at Mollie: fetch mode response empty or invalid");
+
+			if (logger.isDebugEnabled()) {
+				StringWriter sw = new StringWriter();
+
+				Marshaller mc= jbc.createMarshaller();
+				mc.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+				mc.marshal(response, sw);
+
+				logger.debug("Initialized payment at Mollie:\n" + sw.toString());
+			}
+
+			// Validate response data
+			final String transactionId = response.getTransactionId();
+			final String responseAmount = response.getAmount();
+			final String redirectURL = response.getUrl();
+
+			logger.debug("Recieved transactionId {} after initializing payment at Mollie for order {}", transactionId, order.getOrderNumber());
+			logger.debug("Recieved response amount {} after initializing payment at Mollie for order {}", responseAmount, order.getOrderNumber());
+			logger.debug("Recieved transactionId {} after initializing payment at Mollie for order {}", redirectURL, order.getOrderNumber());
+
+			if (StringUtils.isEmpty(transactionId)) {
+				throw new OrderException("Recieved invalid or missing transactionId " + transactionId + " after initializing payment at Mollie for order " + order.getOrderNumber());
+			}
+
+			if (StringUtils.isEmpty(responseAmount) || !responseAmount.equals(config.getMollieFetchModeRequestAmountParameter().getValue())) {
+				throw new OrderException("Recieved invalid, missing or unexpected response amount " + responseAmount + " after initializing payment at Mollie for order " + order.getOrderNumber());
+			}
+
+			if (StringUtils.isEmpty(redirectURL)) {
+				throw new OrderException("Recieved invalid or missing client redirect URL " + redirectURL + " after initializing payment at Mollie for order " + order.getOrderNumber());
+			}
+
+			order.setTransactionId(response.getTransactionId());
+			this.orderFacade.updateOrder(order);
+
+			return redirectURL;
+		} catch (JAXBException | IOException | URISyntaxException | OrderException e) {
+			final String message = "Error while initializing IDeal payment";
 			logger.error(message, e);
 			throw new PaymentException(message, e);
 		}

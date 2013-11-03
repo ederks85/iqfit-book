@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
- * Class used for transferring order related data.
+ * Class used for transfering order related data.
  * 
  * @author Edwin
  *
@@ -23,6 +23,7 @@ public class OrderDataDTO {
 	private String orderNumber;
 	private Date orderDate;
 	private OrderStatus orderStatus;
+	private String transactionId;
 
 	public String getFirstName() {
 		return this.firstName;
@@ -80,6 +81,13 @@ public class OrderDataDTO {
 		this.orderStatus = orderStatus;
 	}
 
+	public String getTransactionId() {
+		return this.transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

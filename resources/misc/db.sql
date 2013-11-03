@@ -16,7 +16,8 @@ WITH (
 CREATE TABLE orders (
 	id		bigserial NOT NULL,
 	customer_id	bigint REFERENCES customer(id),
-	ordernumber	character varying(129) NOT NULL,
+	ordernumber	character varying(128) NOT NULL,
+	transaction_id	character varying(128),
 	orderdate	timestamp without time zone NOT NULL,
 	status		character varying(8) NOT NULL,
 	downloaded	boolean NOT NULL default 'false',
