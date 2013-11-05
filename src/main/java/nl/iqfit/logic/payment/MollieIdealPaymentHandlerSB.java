@@ -80,15 +80,15 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 
 			Validate.notNull(foundBanks, "Error while retrieveing IDeal bank list: no banks recieved");
 
-			if (logger.isDebugEnabled()) {
-				StringWriter sw = new StringWriter();
+			// Log response
+			StringWriter sw = new StringWriter();
 
-				Marshaller mc= jbc.createMarshaller();
-				mc.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				mc.marshal(foundBanks, sw);
+			Marshaller mc= jbc.createMarshaller();
+			mc.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			mc.marshal(foundBanks, sw);
 
-				logger.debug("Retrieved banks from Mollie:\n" + sw.toString());
-			}
+			logger.debug("Retrieved banks from Mollie:\n" + sw.toString());
+
 
 			Set<BankDataDTO> bankDataDTOs = new HashSet<BankDataDTO>();
 			for (Bank bank : foundBanks.getBanks()) {
@@ -145,15 +145,15 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 
 			Validate.notNull(response, "Error while initializing payment at Mollie: fetch mode response empty or invalid");
 
-			if (logger.isDebugEnabled()) {
-				StringWriter sw = new StringWriter();
+			// Log response
+			StringWriter sw = new StringWriter();
 
-				Marshaller mc= jbc.createMarshaller();
-				mc.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				mc.marshal(response, sw);
+			Marshaller mc= jbc.createMarshaller();
+			mc.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			mc.marshal(response, sw);
 
-				logger.debug("Initialized payment at Mollie:\n" + sw.toString());
-			}
+			logger.debug("Response from Mollie for initializing payment for order {}:\n{}", order.getOrderNumber(), sw.toString());
+
 
 			// Validate response data
 			final String transactionId = response.getTransactionId();
