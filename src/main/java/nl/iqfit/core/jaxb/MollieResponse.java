@@ -1,7 +1,5 @@
 package nl.iqfit.core.jaxb;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,19 +8,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+/**
+ * JAXB class for unmarshalling a Mollie {@code MollieResponseOrder} object.
+ * 
+ * @author Edwin
+ *
+ */
 @XmlRootElement(name="response")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Banks {
+public class MollieResponse {
 
-	@XmlElement(name="bank")
-	private List<Bank> banks = null;
+	@XmlElement(name="order", required=true)
+	private MollieResponseOrder order;
 
-	public List<Bank> getBanks() {
-		return this.banks;
+	public MollieResponseOrder getOrder() {
+		return this.order;
 	}
 
-	public void setBanks(List<Bank> banks) {
-		this.banks = banks;
+	public void setOrder(MollieResponseOrder order) {
+		this.order = order;
 	}
 
 	@Override

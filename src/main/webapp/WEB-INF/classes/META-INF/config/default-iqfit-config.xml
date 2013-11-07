@@ -5,8 +5,8 @@
 
 	<payment>
 		<mollie>
-			<mollieURLScheme>https</mollieURLScheme>
-			<mollieURLHost>secure.mollie.nl</mollieURLHost>
+			<mollieURLScheme>http</mollieURLScheme>
+			<mollieURLHost>local.iqfit.nl</mollieURLHost>
 			<mollieURLPath><![CDATA[/xml/ideal]]></mollieURLPath>
 			<mollieURL><![CDATA[${application.payment.mollieURLScheme}://${application.payment.mollieURLHost}${application.payment.mollieURLPath}]]></mollieURL>
 
@@ -21,7 +21,7 @@
 				<mode paramName="fetch">
 					<!-- Request parameters -->
 					<partnerId paramName="partnerid" paramValue="" /> <!-- mollie.nl account number -->
-					<requestAmount paramName="amount" paramValue="" /> <!-- Amount in cents. Example: €10 = 1000 cents -->
+					<requestAmount paramName="amount" paramValue="1495" /> <!-- Amount in cents. Example: €10 = 1000 cents -->
 					<bankId paramName="bank_id" paramValue="" /> <!-- ID of the bank as provided by the "idealBankList" call, must include leading zero's if applicable -->
 					<description paramName="description" paramValue="" /> <!-- Description of the transaction. Maximum length is 29 characters -->
 					<localAfterPaymentReportURL paramName="reporturl" paramValue="" /> <!-- URL that will be called when payment has succeeded or failed. -->

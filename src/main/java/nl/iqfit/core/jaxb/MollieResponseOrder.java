@@ -14,9 +14,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author Edwin
  *
  */
-@XmlRootElement(name="response")
+@XmlRootElement(name="order")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MollieFetchModeResponse {
+public class MollieResponseOrder {
 
 	@XmlElement(name="transaction_id", required=true)
 	private String transactionId;
@@ -27,7 +27,7 @@ public class MollieFetchModeResponse {
 	@XmlElement(name="currency", required=true)
 	private String currency;
 
-	@XmlElement(name="URL", required=true)
+	@XmlElement(name="URL")
 	private String url;
 
 	@XmlElement(name="message", required=true)

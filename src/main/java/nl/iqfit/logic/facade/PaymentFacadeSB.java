@@ -27,6 +27,7 @@ public class PaymentFacadeSB implements PaymentFacade {
 
 			// IDeal payment has been successfully initialized, update order status 
 			order.setOrderStatus(OrderStatus.PAY_INIT);
+			this.orderFacade.updateOrder(order);
 
 			return redirectURL;
 		} catch (RuntimeException | PaymentException e) {

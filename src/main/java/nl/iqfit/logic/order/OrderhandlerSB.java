@@ -62,7 +62,10 @@ public class OrderhandlerSB implements OrderHandler {
 		orders.add(order);
 		customer.setOrders(orders);
 		this.entityManager.merge(customer);
-		
+
+		// Update orderData DTO with order status recieved from the database
+		orderData.setOrderStatus(order.getStatus());
+
 		// Return the order as it has been persisted for possible handling by the caller
 		return orderData;
 	}
