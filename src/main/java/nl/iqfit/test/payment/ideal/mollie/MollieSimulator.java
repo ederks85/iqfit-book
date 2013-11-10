@@ -26,6 +26,13 @@ public class MollieSimulator extends HttpServlet {
 
 		IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
 
+		// Mollie simulator is only available for test environment
+		if (!config.isTestEnvironment()) {
+			logger.warn("MollieSimulator called in test environment.");
+			response.sendError(404);
+			return;
+		}
+
 		final String type = request.getParameter(config.getMollieBankListModeParameter().getName());
 		final String testMode = request.getParameter(config.getMollieTestModeParameter().getName());
 

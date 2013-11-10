@@ -161,7 +161,7 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 
 			logger.debug("Recieved transactionId {} after initializing payment at Mollie for order {}", transactionId, order.getOrderNumber());
 			logger.debug("Recieved response amount {} after initializing payment at Mollie for order {}", responseAmount, order.getOrderNumber());
-			logger.debug("Recieved transactionId {} after initializing payment at Mollie for order {}", redirectURL, order.getOrderNumber());
+			logger.debug("Recieved redirect URL {} after initializing payment at Mollie for order {}", redirectURL, order.getOrderNumber());
 
 			if (StringUtils.isEmpty(transactionId)) {
 				throw new OrderException("Recieved invalid or missing transactionId " + transactionId + " after initializing payment at Mollie for order " + order.getOrderNumber());
