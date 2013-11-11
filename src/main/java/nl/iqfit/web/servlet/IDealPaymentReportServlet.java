@@ -35,6 +35,7 @@ public class IDealPaymentReportServlet extends HttpServlet {
 
 		if (StringUtils.isBlank(transactionId)) {
 			logger.warn("Received call on idealpaymentreport with INVALID transaction id {}", transactionId);
+			response.sendError(500, "Invalid transaction_id");
 		} else {
 			logger.info("Looking up order with transaction id {}", transactionId);
 			final OrderDataDTO orderData = this.orderFacade.getOrderByTransactionID(transactionId);

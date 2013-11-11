@@ -6,5 +6,5 @@ package nl.iqfit.logic.db.entity;
  */
 public enum OrderStatus {
 
-	OPEN, PAY_INIT, PAY_CONF, ERROR;
+	OPEN, PAY_INIT, PAY_CONF, ERROR, PAYED;
 }
