@@ -6,8 +6,8 @@
 	<IQFitURLScheme>http</IQFitURLScheme>
 	<IQFitURLHost>local.iqfit.nl</IQFitURLHost>
 	<IQFitURL><![CDATA[${IQFitURLScheme}://${IQFitURLHost}]]></IQFitURL>
-
-	<idealPaymentReportPath><![CDATA[/idealpaymentreport]]></idealPaymentReportPath>
+	<IQFitIdealPaymentReportPath><![CDATA[/idealpaymentreport]]></IQFitIdealPaymentReportPath>
+	<IQFitPaymentReturnPath><![CDATA[/paymentreturn]]></IQFitPaymentReturnPath>
 
 	<payment>
 		<mollie>
@@ -30,7 +30,7 @@
 					<requestAmount paramName="amount" paramValue="1495" /> <!-- Amount in cents. Example: €10 = 1000 cents -->
 					<bankId paramName="bank_id" paramValue="" /> <!-- ID of the bank as provided by the "idealBankList" call, must include leading zero's if applicable -->
 					<description paramName="description" paramValue="" /> <!-- Description of the transaction. Maximum length is 29 characters -->
-					<localAfterPaymentReportURL paramName="reporturl" paramValue="${IQFitURL}${idealPaymentReportPath}" /> <!-- URL that will be called when payment has succeeded or failed. -->
+					<localAfterPaymentReportURL paramName="reporturl" paramValue="${IQFitURL}${IQFitIdealPaymentReportPath}" /> <!-- URL that will be called when payment has succeeded or failed. -->
 					<localAfterPaymentClientReturnURL paramName="returnurl" paramValue="" /> <!-- URL that the client will be redirected to after payment has finished, regardless of it being a success or failure  -->
 					<profileKey paramName="profile_key" paramValue="" /> <!-- Select a website profile to link the transaction to -->
 

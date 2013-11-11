@@ -14,6 +14,8 @@ public class IQFitConfig {
 	private final String iqFitURLScheme;
 	private final String iqFitURLHost;
 	private final String iqFitURL;
+	private final String iqFitIdealPaymentReportPath;
+	private final String iqFitPaymentReturnPath;
 
 	private final String mollieURLScheme;
 	private final String mollieURLHost;
@@ -44,6 +46,8 @@ public class IQFitConfig {
 		this.iqFitURLScheme = configuration.getString("IQFitURLScheme");
 		this.iqFitURLHost = configuration.getString("IQFitURLHost");
 		this.iqFitURL = configuration.getString("IQFitURL");
+		this.iqFitIdealPaymentReportPath = configuration.getString("IQFitIdealPaymentReportPath");
+		this.iqFitPaymentReturnPath = configuration.getString("IQFitPaymentReturnPath");
 
 		this.mollieURLScheme = configuration.getString("payment.mollie.mollieURLScheme");
 		this.mollieURLHost = configuration.getString("payment.mollie.mollieURLHost");
@@ -90,6 +94,14 @@ public class IQFitConfig {
 
 	public String getIqFitURL() {
 		return this.iqFitURL;
+	}
+
+	public String getIqFitIdealPaymentReportPath() {
+		return this.iqFitIdealPaymentReportPath;
+	}
+
+	public String getIqFitPaymentReturnPath() {
+		return this.iqFitPaymentReturnPath;
 	}
 
 	public String getMollieURLScheme() {

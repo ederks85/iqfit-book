@@ -37,7 +37,7 @@ public class MollieIDealPaymentPageSimulator extends HttpServlet {
 			logger.warn("Invalid or unknown transaction id recieved  called in test environmenton MollieIDealPaymentPageSimulator: {}", transactionId);
 			response.sendError(500, "Invalid or unknown transaction id recieved  called in test environmenton MollieIDealPaymentPageSimulator");
 		} else {
-			request.setAttribute("reportURL", config.getMollieFetchModeLocalAfterPaymentReportURLParameter().getValue());
+			request.setAttribute("reportURL", "/test/ideal/mollie/paymentreport");
 			request.setAttribute("transactionId", transactionId);
 			logger.debug("MollieIDealPaymentPageSimulator: redirecting to simulated payment page with transaction id: {}", transactionId);
 			request.getRequestDispatcher("/WEB-INF/views/test/idealPaymentPage.jsp").forward(request, response);
