@@ -10,6 +10,8 @@ import nl.iqfit.logic.db.entity.OrderStatus;
 import nl.iqfit.logic.payment.IDealPaymentHandler;
 import nl.iqfit.logic.payment.PaymentException;
 
+import org.apache.commons.lang.Validate;
+
 public class PaymentFacadeSB implements PaymentFacade {
 
 	@Inject IDealPaymentHandler idealPaymentHandler;
@@ -22,6 +24,9 @@ public class PaymentFacadeSB implements PaymentFacade {
 
 	@Override
 	public String initializeIdealPayment(final OrderDataDTO order, final BankDataDTO bank) throws PaymentException {
+		Validate.notNull(order, "OrderDataDTO is null");
+		Validate.notNull(bank, "BankDataDTO is null");
+
 		try {
 			final String redirectURL = this.idealPaymentHandler.initializeIdealPayment(order, bank);
 
@@ -30,6 +35,19 @@ public class PaymentFacadeSB implements PaymentFacade {
 			this.orderFacade.updateOrder(order);
 
 			return redirectURL;
+		} catch (RuntimeException | PaymentException e) {
+			order.setOrderStatus(OrderStatus.ERROR);
+			this.orderFacade.updateOrder(order);
+			throw e;
+		}
+	}
+
+	@Override
+	public void processIdealPaymentForOrder(OrderDataDTO order)	throws PaymentException {
+		Validate.notNull(order, "OrderDataDTO is null");
+
+		try {
+			this.idealPaymentHandler.processIdealPaymentForOrder(order);
 		} catch (RuntimeException | PaymentException e) {
 			order.setOrderStatus(OrderStatus.ERROR);
 			this.orderFacade.updateOrder(order);

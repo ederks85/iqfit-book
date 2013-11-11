@@ -15,7 +15,6 @@ import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.logic.db.entity.CustomerEntity;
 import nl.iqfit.logic.db.entity.OrderDAO;
 import nl.iqfit.logic.db.entity.OrderEntity;
-import nl.iqfit.logic.db.entity.OrderStatus;
 
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;

@@ -15,6 +15,7 @@ import org.apache.commons.lang.Validate;
  */
 public class RequestHelper {
 
+	//TODO Maintenance: use this on more locations?
 	public String getRequestParameter(HttpServletRequest request, String paramName) {
 		Validate.notNull(request, "Request is null.");
 		Validate.notNull(paramName, "paramName is null.");
@@ -26,6 +27,7 @@ public class RequestHelper {
 		return paramValue;
 	}
 
+	//TODO Maintenance: use this on more locations?
 	public String getRequestParametersToString(final HttpServletRequest request) {
 		Validate.notNull(request, "Request is null.");
 

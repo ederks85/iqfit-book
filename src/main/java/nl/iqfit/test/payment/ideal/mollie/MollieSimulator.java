@@ -35,11 +35,12 @@ public class MollieSimulator extends HttpServlet {
 
 		final String type = request.getParameter(config.getMollieBankListModeParameter().getName());
 		final String testMode = request.getParameter(config.getMollieTestModeParameter().getName());
+		
 
 		logger.debug("MollieSimulator: recieved type parameter: {}={}", config.getMollieBankListModeParameter().getName(), type);
 		logger.debug("MollieSimulator: recieved testMode parameter: {}={}", config.getMollieTestModeParameter().getName(), testMode);
 
-		response.setContentType("application.xml");
+		response.setContentType("application/xml");
 		if (config.getMollieBankListModeParameter().getValue().equals(type)) {
 			request.getRequestDispatcher("/WEB-INF/views/test/bankList.jsp").forward(request, response);
 		} 	else if (config.getMollieFetchModeParameter().getValue().equals(type)) {
@@ -53,11 +54,20 @@ public class MollieSimulator extends HttpServlet {
 			if (!StringUtils.isBlank(amount)) {
 				request.setAttribute("amount", amount);
 			}
-			request.getRequestDispatcher("/WEB-INF/views/test/fetch.jsp").forward(request, response);;
-//		} 	else if (config.getMollieCheckModeParameter().getValue().equals(type)) {
-			
+			request.getRequestDispatcher("/WEB-INF/views/test/fetch.jsp").forward(request, response);
+		} 	else if (config.getMollieCheckModeParameter().getValue().equals(type)) {
+			final String partnerId = request.getParameter(config.getMollieCheckModePartnerIdParameter().getName());
+			final String transactionId = request.getParameter(config.getMollieCheckModeRequestTransactionIdParameter().getName());
+
+			logger.debug("MollieSimulator: recieved partner ID parameter: {}={}", config.getMollieCheckModePartnerIdParameter().getName(), partnerId);
+			logger.debug("MollieSimulator: recieved transaction ID parameter: {}={}", config.getMollieCheckModeRequestTransactionIdParameter().getName(), transactionId);
+
+			request.setAttribute("transactionId", transactionId);
+			request.setAttribute(config.getMollieCheckModeResponseAmountParameter().getName(), config.getMollieCheckModeResponseAmountParameter().getValue());
+
+			request.getRequestDispatcher("/WEB-INF/views/test/check.jsp").forward(request, response);
 		} else {
-			request.getRequestDispatcher("/WEB-INF/views/test/error.jsp").forward(request, response);;
+			request.getRequestDispatcher("/WEB-INF/views/test/error.jsp").forward(request, response);
 		}
 	}
 }

@@ -27,8 +27,17 @@ public class MollieResponseOrder {
 	@XmlElement(name="currency", required=true)
 	private String currency;
 
+	@XmlElement(name="payed")
+	private String payed;
+
 	@XmlElement(name="URL")
 	private String url;
+
+	@XmlElement(name="status")
+	private String status;
+
+	@XmlElement(name="consumer")
+	private Consumer consumer;
 
 	@XmlElement(name="message", required=true)
 	private String message;
@@ -53,6 +62,14 @@ public class MollieResponseOrder {
 		return this.currency;
 	}
 
+	public String getPayed() {
+		return this.payed;
+	}
+
+	public void setPayed(String payed) {
+		this.payed = payed;
+	}
+
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
@@ -63,6 +80,22 @@ public class MollieResponseOrder {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Consumer getConsumer() {
+		return this.consumer;
+	}
+
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
 	}
 
 	public String getMessage() {

@@ -14,6 +14,7 @@ public class IQFitConfigurationFactory {
 
 	private static final Logger logger = LoggerFactory.getLogger(IQFitConfigurationFactory.class);
 
+	private static volatile boolean loaded = false;
 	//TODO optimize this in static initialization
 	public IQFitConfig getIQFitConfig() {
 		URL configLocation = ConfigurationUtils.locate("META-INF/config.xml");
@@ -24,7 +25,11 @@ public class IQFitConfigurationFactory {
 
 			CombinedConfiguration config = cf.getConfiguration(true);
 			Configuration interpolatedConfig = config.interpolatedConfiguration();
-			logger.debug("Loaded interpolated configuration:\n{}", ConfigurationUtils.toString(interpolatedConfig));
+
+			if (!loaded) {
+				logger.debug("Loaded interpolated configuration:\n{}", ConfigurationUtils.toString(interpolatedConfig));
+				loaded = true;
+			}
 
 			return new IQFitConfig(interpolatedConfig);
 		} catch (ConfigurationException e) {

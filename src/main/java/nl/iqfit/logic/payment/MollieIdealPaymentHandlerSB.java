@@ -22,8 +22,8 @@ import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.core.jaxb.Bank;
 import nl.iqfit.core.jaxb.Banks;
 import nl.iqfit.core.jaxb.MollieResponse;
+import nl.iqfit.logic.db.entity.OrderStatus;
 import nl.iqfit.logic.facade.OrderFacade;
-import nl.iqfit.logic.order.OrderException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -124,13 +124,13 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 				.addParameter(URLEncoder.encode(config.getMollieFetchModeLocalAfterPaymentClientReturnURLParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieFetchModeLocalAfterPaymentClientReturnURLParameter().getValue(), "UTF-8"));
 
 			final URI mollieInitilizePaymentURL = uriBuilder.build();
-			logger.debug("URL for initializing payment at Mollie: {}", mollieInitilizePaymentURL.toString());
+			logger.debug("URL for initializing payment at Mollie for order {}: {}", order.getOrderNumber(), mollieInitilizePaymentURL.toString());
 
 			HttpGet get = new HttpGet(mollieInitilizePaymentURL);
 
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpResponse httpResponse = httpClient.execute(get);
-			logger.debug("HTTP Response from initializing payment at Mollie: {}", httpResponse.getStatusLine().getStatusCode());
+			logger.debug("HTTP Response from initializing payment at Mollie for order {}: {}", order.getOrderNumber(), httpResponse.getStatusLine().getStatusCode());
 
 			final int statusCode = httpResponse.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
@@ -163,24 +163,132 @@ public class MollieIdealPaymentHandlerSB implements IDealPaymentHandler {
 			logger.debug("Recieved response amount {} after initializing payment at Mollie for order {}", responseAmount, order.getOrderNumber());
 			logger.debug("Recieved redirect URL {} after initializing payment at Mollie for order {}", redirectURL, order.getOrderNumber());
 
-			if (StringUtils.isEmpty(transactionId)) {
-				throw new OrderException("Recieved invalid or missing transactionId " + transactionId + " after initializing payment at Mollie for order " + order.getOrderNumber());
+			if (StringUtils.isBlank(transactionId)) {
+				throw new PaymentException("Recieved invalid or missing transactionId " + transactionId + " after initializing payment at Mollie for order " + order.getOrderNumber());
 			}
 
-			if (StringUtils.isEmpty(responseAmount) || !responseAmount.equals(config.getMollieFetchModeRequestAmountParameter().getValue())) {
-				throw new OrderException("Recieved invalid, missing or unexpected response amount " + responseAmount + " after initializing payment at Mollie for order " + order.getOrderNumber());
+			if (StringUtils.isBlank(responseAmount) || !responseAmount.equals(config.getMollieFetchModeRequestAmountParameter().getValue())) {
+				throw new PaymentException("Recieved invalid, missing or unexpected response amount " + responseAmount + " after initializing payment at Mollie for order " + order.getOrderNumber());
 			}
 
-			if (StringUtils.isEmpty(redirectURL)) {
-				throw new OrderException("Recieved invalid or missing client redirect URL " + redirectURL + " after initializing payment at Mollie for order " + order.getOrderNumber());
+			if (StringUtils.isBlank(redirectURL)) {
+				throw new PaymentException("Recieved invalid or missing client redirect URL " + redirectURL + " after initializing payment at Mollie for order " + order.getOrderNumber());
 			}
 
 			order.setTransactionId(response.getOrder().getTransactionId());
 			this.orderFacade.updateOrder(order);
 
 			return redirectURL;
-		} catch (JAXBException | IOException | URISyntaxException | OrderException e) {
+		} catch (JAXBException | IOException | URISyntaxException e) {
 			final String message = "Error while initializing IDeal payment";
+			logger.error(message, e);
+			throw new PaymentException(message, e);
+		}
+	}
+
+	public void processIdealPaymentForOrder(final OrderDataDTO order) throws PaymentException {
+		Validate.notNull(order, "order is null");
+
+		logger.info("Processing IDeal payment details for order {}", order);
+
+		try {
+			final IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
+	
+			final URIBuilder uriBuilder = new URIBuilder()
+				.setScheme(config.getMollieURLScheme())
+				.setHost(config.getMollieURLHost())
+				.setPath(config.getMollieURLPath())
+				.addParameter(URLEncoder.encode(config.getMollieCheckModeParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieCheckModeParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieCheckModePartnerIdParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieCheckModePartnerIdParameter().getValue(), "UTF-8"))
+				.addParameter(URLEncoder.encode(config.getMollieCheckModeRequestTransactionIdParameter().getName(), "UTF-8"), URLEncoder.encode(order.getTransactionId(), "UTF-8"));
+	
+			if (config.isTestEnvironment()) {
+				uriBuilder.addParameter(URLEncoder.encode(config.getMollieTestModeParameter().getName(), "UTF-8"), URLEncoder.encode(config.getMollieTestModeParameter().getValue(), "UTF-8"));
+			}
+	
+			final URI mollieCheckPaymentURL = uriBuilder.build();
+			logger.debug("URL for checking payment details at Mollie for order {}: {}", order.getOrderNumber(), mollieCheckPaymentURL.toString());
+	
+			HttpGet get = new HttpGet(mollieCheckPaymentURL);
+	
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpResponse httpResponse = httpClient.execute(get);
+			logger.debug("HTTP Response from checking payment details at Mollie for order {}: {}", order.getOrderNumber(), httpResponse.getStatusLine().getStatusCode());
+	
+			final int statusCode = httpResponse.getStatusLine().getStatusCode();
+			if (statusCode != HttpStatus.SC_OK) {
+				throw new PaymentException("Unexpected http status code while initializing payment at Mollie: " + statusCode);
+			}
+	
+			// Unmarshall XML response to MollieFetchModeResponse objects
+			JAXBContext jbc = JAXBContext.newInstance(MollieResponse.class);
+			Unmarshaller u = jbc.createUnmarshaller();
+			MollieResponse response =  (MollieResponse)u.unmarshal(new InputStreamReader(httpResponse.getEntity().getContent()));
+	
+			Validate.notNull(response, "Error while checking payment details at Mollie: check mode response empty or invalid");
+	
+			// Log response
+			StringWriter sw = new StringWriter();
+	
+			Marshaller mc= jbc.createMarshaller();
+			mc.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			mc.marshal(response, sw);
+	
+			logger.info("Response from Mollie for processing IDeal Payment Details for order {}:\n{}", order.getOrderNumber(), sw.toString());
+
+			// Validate response data
+			final String transactionId = response.getOrder().getTransactionId();
+			final String responseAmount = response.getOrder().getAmount();
+			final String payed = response.getOrder().getPayed();
+			final String status = response.getOrder().getStatus();
+
+			logger.debug("Recieved transactionId {} for processing IDeal Payment Details for order {}", transactionId, order.getOrderNumber());
+			logger.debug("Recieved response amount {} for processing IDeal Payment Details for order {}", responseAmount, order.getOrderNumber());
+			logger.debug("Recieved payed {} for processing IDeal Payment Details for order {}", payed, order.getOrderNumber());
+			logger.debug("Recieved status {} for processing IDeal Payment Details for order {}", status, order.getOrderNumber());
+
+			// Validate response
+			if (StringUtils.isBlank(transactionId)) {
+				throw new PaymentException("Recieved invalid or missing transactionId " + transactionId + " for processing IDeal Payment Details for order " + order.getOrderNumber());
+			}
+
+			if (StringUtils.isBlank(responseAmount) || !responseAmount.equals(config.getMollieFetchModeRequestAmountParameter().getValue())) {
+				throw new PaymentException("Recieved invalid, missing or unexpected response amount " + responseAmount + " for processing IDeal Payment Details for order " + order.getOrderNumber());
+			}
+
+			if (Boolean.TRUE.equals(Boolean.parseBoolean(payed))) {
+				logger.info("Recieved confirmation that payment was successful for order: {}.", order.getOrderNumber());
+				order.setOrderStatus(OrderStatus.PAY_SUCC);
+				this.orderFacade.updateOrder(order);
+			} else {
+				logger.warn("Check for order: {} was performed, but no payment confirmation has been returned.", order.getOrderNumber());
+
+				// Check why no payment confirmation was returned and update the order if necessary, based on possible 'status' field
+				if (StringUtils.isBlank(status)) {
+					logger.warn("Current payment status for order {}: {}. No status recieved so can not determine status of order at payment provider", order.getOrderNumber(), order.getOrderStatus());
+				} else if (status.equals(config.getMollieCheckModeResponseStatusOptionsSuccessParameter().getValue())) {
+					logger.warn("Current payment status for order {}: {}. Status \"{}\" recieved so updating order accordingly.", new Object[]{order.getOrderNumber(), order.getOrderStatus(), status});
+				} else if (status.equals(config.getMollieCheckModeResponseStatusOptionsCancelParameter().getValue())) {
+					logger.warn("Current payment status for order {}: {}. Status \"{}\" recieved. Updating order accordingly.", new Object[]{order.getOrderNumber(), order.getOrderStatus(), status});
+					order.setOrderStatus(OrderStatus.PAY_CANC);
+					this.orderFacade.updateOrder(order);
+				} else if (status.equals(config.getMollieCheckModeResponseStatusOptionsFailureParameter().getValue())) {
+					logger.warn("Current payment status for order {}: {}. Status \"{}\" recieved. Updating order accordingly.", new Object[]{order.getOrderNumber(), order.getOrderStatus(), status});
+					order.setOrderStatus(OrderStatus.PAY_FAIL);
+					this.orderFacade.updateOrder(order);
+				} else if (status.equals(config.getMollieCheckModeResponseStatusOptionsExpireParameter().getValue())) {
+					logger.warn("Current payment status for order {}: {}. Status \"{}\" recieved. Updating order accordingly.", new Object[]{order.getOrderNumber(), order.getOrderStatus(), status});
+					order.setOrderStatus(OrderStatus.PAY_EXP);
+					this.orderFacade.updateOrder(order);
+				} else if (status.equals(config.getMollieCheckModeResponseStatusOptionsCheckedBeforeParameter().getValue())) {
+					logger.warn("Current payment status for order {}: {}. Status \"{}\" recieved. Not updating order.", new Object[]{order.getOrderNumber(), order.getOrderStatus(), status});
+				} else {
+					logger.warn("Current payment status for order {}: {}. Unknown status \"{}\" recieved. Not updating order.", new Object[]{order.getOrderNumber(), order.getOrderStatus(), status});
+				}
+			}
+
+		} catch (JAXBException | IOException | URISyntaxException e) {
+			final String message = "Error while processing IDeal Payment Details for order: " + order.getOrderNumber();
 			logger.error(message, e);
 			throw new PaymentException(message, e);
 		}

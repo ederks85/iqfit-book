@@ -1,5 +1,8 @@
 package nl.iqfit.core.configuration;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -8,35 +11,46 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class IQFitConfig {
 
-	private final String environment;
-	private final boolean testEnvironment;
+	private final String		environment;
+	private final boolean		testEnvironment;
 
-	private final String iqFitURLScheme;
-	private final String iqFitURLHost;
-	private final String iqFitURL;
-	private final String iqFitIdealPaymentReportPath;
-	private final String iqFitPaymentReturnPath;
+	private final String		iqFitURLScheme;
+	private final String		iqFitURLHost;
+	private final String		iqFitURL;
+	private final String		iqFitIdealPaymentReportPath;
+	private final String		iqFitPaymentReturnPath;
 
-	private final String mollieURLScheme;
-	private final String mollieURLHost;
-	private final String mollieURLPath;
-	private final String mollieURL;
+	private final String		mollieURLScheme;
+	private final String		mollieURLHost;
+	private final String		mollieURLPath;
+	private final String		mollieURL;
 
-	private final NameValuePair mollieTestModeParameter;
+	private final NameValuePair	mollieTestModeParameter;
 
-	private final NameValuePair mollieBankListModeParameter;
+	private final NameValuePair	mollieBankListModeParameter;
 
-	private final NameValuePair mollieFetchModeParameter;
-	private final NameValuePair mollieFetchModePartnerIdParameter;
-	private final NameValuePair mollieFetchModeRequestAmountParameter;
-	private final NameValuePair mollieFetchModeBankIdParameter;
-	private final NameValuePair mollieFetchModeDescriptionParameter;
-	private final NameValuePair mollieFetchModeLocalAfterPaymentReportURLParameter;
-	private final NameValuePair mollieFetchModeLocalAfterPaymentClientReturnURLParameter;
-	private final NameValuePair mollieFetchModeProfileKeyParameter;
-	private final NameValuePair mollieFetchModeTransactionIdParameter;
-	private final NameValuePair mollieFetchModeResponseAmountParameter;
-	private final NameValuePair mollieFetchModeRemoteStartPaymentClientRedirectURLParameter;
+	private final NameValuePair	mollieFetchModeParameter;
+	private final NameValuePair	mollieFetchModePartnerIdParameter;
+	private final NameValuePair	mollieFetchModeRequestAmountParameter;
+	private final NameValuePair	mollieFetchModeBankIdParameter;
+	private final NameValuePair	mollieFetchModeDescriptionParameter;
+	private final NameValuePair	mollieFetchModeLocalAfterPaymentReportURLParameter;
+	private final NameValuePair	mollieFetchModeLocalAfterPaymentClientReturnURLParameter;
+	private final NameValuePair	mollieFetchModeProfileKeyParameter;
+	private final NameValuePair	mollieFetchModeTransactionIdParameter;
+	private final NameValuePair	mollieFetchModeResponseAmountParameter;
+	private final NameValuePair	mollieFetchModeRemoteStartPaymentClientRedirectURLParameter;
+
+	private final NameValuePair	mollieCheckModeParameter;
+	private final NameValuePair	mollieCheckModePartnerIdParameter;
+	private final NameValuePair	mollieCheckModeRequestTransactionIdParameter;
+	private final NameValuePair	mollieCheckModeResponseAmountParameter;
+	private final String		mollieCheckModeResponseStatusOptionsParameterName;
+	private final NameValuePair	mollieCheckModeResponseStatusOptionsSuccessParameter;
+	private final NameValuePair	mollieCheckModeResponseStatusOptionsCancelParameter;
+	private final NameValuePair	mollieCheckModeResponseStatusOptionsFailureParameter;
+	private final NameValuePair	mollieCheckModeResponseStatusOptionsExpireParameter;
+	private final NameValuePair	mollieCheckModeResponseStatusOptionsCheckedBeforeParameter;
 
 	IQFitConfig(Configuration configuration) {
 
@@ -69,6 +83,17 @@ public class IQFitConfig {
 		this.mollieFetchModeTransactionIdParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).transactionId[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).transactionId[@paramValue]"));
 		this.mollieFetchModeResponseAmountParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).responseAmount[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).responseAmount[@paramValue]"));
 		this.mollieFetchModeRemoteStartPaymentClientRedirectURLParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(2).remoteStartPaymentClientRedirectURL[@paramName]"), configuration.getString("payment.mollie.modes.mode(2).remoteStartPaymentClientRedirectURL[@paramValue]"));
+
+		this.mollieCheckModeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(1)[@paramName]"), configuration.getString("payment.mollie.modes.mode(1).check[@paramValue]"));
+		this.mollieCheckModePartnerIdParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).partnerId[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).partnerId[@paramValue]"));
+		this.mollieCheckModeRequestTransactionIdParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).requestTransactionId[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).requestTransactionId[@paramValue]"));
+		this.mollieCheckModeResponseAmountParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).responseAmount[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).responseAmount[@paramValue]"));
+		this.mollieCheckModeResponseStatusOptionsParameterName = configuration.getString("payment.mollie.modes.mode(3).status[@paramName]");
+		this.mollieCheckModeResponseStatusOptionsSuccessParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.successStatusOption[@paramValue]"));
+		this.mollieCheckModeResponseStatusOptionsCancelParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.cancelledCtatusOption[@paramValue]"));
+		this.mollieCheckModeResponseStatusOptionsFailureParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.failureStatusOption[@paramValue]"));
+		this.mollieCheckModeResponseStatusOptionsExpireParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.expiredStatusOption[@paramValue]"));
+		this.mollieCheckModeResponseStatusOptionsCheckedBeforeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.checkedBeforeStatusOption[@paramValue]"));
 	}
 
 	@Override
@@ -170,5 +195,45 @@ public class IQFitConfig {
 
 	public NameValuePair getMollieFetchModeRemoteStartPaymentClientRedirectURLParameter() {
 		return this.mollieFetchModeRemoteStartPaymentClientRedirectURLParameter;
+	}
+
+	public NameValuePair getMollieCheckModeParameter() {
+		return this.mollieCheckModeParameter;
+	}
+
+	public NameValuePair getMollieCheckModePartnerIdParameter() {
+		return this.mollieCheckModePartnerIdParameter;
+	}
+
+	public NameValuePair getMollieCheckModeRequestTransactionIdParameter() {
+		return this.mollieCheckModeRequestTransactionIdParameter;
+	}
+
+	public NameValuePair getMollieCheckModeResponseAmountParameter() {
+		return this.mollieCheckModeResponseAmountParameter;
+	}
+
+	public String getMollieCheckModeResponseStatusOptionsParameterName() {
+		return this.mollieCheckModeResponseStatusOptionsParameterName;
+	}
+
+	public NameValuePair getMollieCheckModeResponseStatusOptionsSuccessParameter() {
+		return this.mollieCheckModeResponseStatusOptionsSuccessParameter;
+	}
+
+	public NameValuePair getMollieCheckModeResponseStatusOptionsCancelParameter() {
+		return this.mollieCheckModeResponseStatusOptionsCancelParameter;
+	}
+
+	public NameValuePair getMollieCheckModeResponseStatusOptionsFailureParameter() {
+		return this.mollieCheckModeResponseStatusOptionsFailureParameter;
+	}
+
+	public NameValuePair getMollieCheckModeResponseStatusOptionsExpireParameter() {
+		return this.mollieCheckModeResponseStatusOptionsExpireParameter;
+	}
+
+	public NameValuePair getMollieCheckModeResponseStatusOptionsCheckedBeforeParameter() {
+		return this.mollieCheckModeResponseStatusOptionsCheckedBeforeParameter;
 	}
 }

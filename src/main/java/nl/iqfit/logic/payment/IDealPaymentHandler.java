@@ -32,4 +32,13 @@ public interface IDealPaymentHandler {
 	 * @throws PaymentException when initializing the payment fails.
 	 */
 	String initializeIdealPayment(OrderDataDTO order, BankDataDTO bank) throws PaymentException;
+
+	/**
+	 * After a client has performed a payment, retrieve and process the details.
+	 * 
+	 * @param orderData	The {@code OrderDataDTO} where the payment details will be processed for.
+	 * 
+	 * @throws PaymentException when processing the payment details fails.
+	 */
+	void processIdealPaymentForOrder(final OrderDataDTO orderData) throws PaymentException;
 }

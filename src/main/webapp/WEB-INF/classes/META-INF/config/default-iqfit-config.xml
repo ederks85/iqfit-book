@@ -23,6 +23,7 @@
 				<mode paramName="a">
 					<idealBankList paramValue="banklist" />
 					<fetch paramValue="fetch" />
+					<check paramValue="check" />
 				</mode>
 				<mode paramName="fetch">
 					<!-- Request parameters -->
@@ -38,6 +39,23 @@
 					<transactionId paramName="transaction_id" paramValue="" /> <!-- ID of the transaction in question -->
 					<responseAmount paramName="amount" paramValue="" /> <!-- The amount that must match the requested amount, just for integrity -->
 					<remoteStartPaymentClientRedirectURL paramName="URL" paramValue="" /> <!-- URL that the client must be redirected to for actually performing the payment -->
+				</mode>
+				<mode paramName="check">
+					<!-- Request parameters -->
+					<partnerId paramName="partnerid" paramValue="" /> <!-- mollie.nl account number -->
+					<requestTransactionId paramName="transaction_id" paramValue="" /> <!-- ID of the transaction in question -->
+
+					<!-- Response parameters -->
+					<responseTransactionId paramName="transaction_id" paramValue="" /> <!-- ID of the transaction in question -->
+					<responseAmount paramName="amount" paramValue="1495" /> <!-- The amount that must match the requested amount, just for integrity -->
+					<payed paramName="payed" paramValue="" /> <!-- Contains true or false. True is only provided once to prevent data mining!!! -->
+					<status paramName="status"><!-- Provides more detailed status about the current state of the payment  -->
+						<successStatusOption paramValue="Success" /><!-- Payment succeeded -->
+						<cancelledCtatusOption paramValue="Cancelled" /><!-- Client has cancelled the payment -->
+						<failureStatusOption paramValue="Failure" /><!-- Undisclosed failure of the payment -->
+						<expiredStatusOption paramValue="Expired" /><!-- Client has not tried to fulfill the payment -->
+						<checkedBeforeStatusOption paramValue="CheckedBefore" /><!-- The check has already been done before -->
+					</status>
 				</mode>
 			</modes>
 		</mollie>

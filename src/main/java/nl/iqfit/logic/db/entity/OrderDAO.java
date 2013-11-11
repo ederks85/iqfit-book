@@ -3,8 +3,6 @@ package nl.iqfit.logic.db.entity;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 
-import nl.iqfit.core.dto.OrderDataDTO;
-
 /**
  * Class for accessing order related data.
  * 
