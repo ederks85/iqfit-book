@@ -11,6 +11,10 @@ public class IQFitConfig {
 	private final String environment;
 	private final boolean testEnvironment;
 
+	private final String iqFitURLScheme;
+	private final String iqFitURLHost;
+	private final String iqFitURL;
+
 	private final String mollieURLScheme;
 	private final String mollieURLHost;
 	private final String mollieURLPath;
@@ -36,6 +40,10 @@ public class IQFitConfig {
 
 		this.environment = configuration.getString("environment");
 		this.testEnvironment = configuration.getBoolean("testEnvironment");
+
+		this.iqFitURLScheme = configuration.getString("IQFitURLScheme");
+		this.iqFitURLHost = configuration.getString("IQFitURLHost");
+		this.iqFitURL = configuration.getString("IQFitURL");
 
 		this.mollieURLScheme = configuration.getString("payment.mollie.mollieURLScheme");
 		this.mollieURLHost = configuration.getString("payment.mollie.mollieURLHost");
@@ -70,6 +78,18 @@ public class IQFitConfig {
 
 	public boolean isTestEnvironment() {
 		return this.testEnvironment;
+	}
+
+	public String getIqFitURLScheme() {
+		return this.iqFitURLScheme;
+	}
+
+	public String getIqFitURLHost() {
+		return this.iqFitURLHost;
+	}
+
+	public String getIqFitURL() {
+		return this.iqFitURL;
 	}
 
 	public String getMollieURLScheme() {

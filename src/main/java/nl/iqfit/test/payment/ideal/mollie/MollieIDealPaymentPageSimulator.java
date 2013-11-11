@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import nl.iqfit.core.configuration.IQFitConfig;
 import nl.iqfit.core.configuration.IQFitConfigurationFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,15 @@ public class MollieIDealPaymentPageSimulator extends HttpServlet {
 			return;
 		}
 
-		logger.debug("MollieIDealPaymentPageSimulator: redirecting to simulated payment page");
-
-		request.getRequestDispatcher("/WEB-INF/views/test/idealPaymentPage.jsp").forward(request, response);
+		final String transactionId = request.getParameter("transaction_id");
+		if (StringUtils.isBlank(transactionId)) {
+			logger.warn("Invalid or unknown transaction id recieved  called in test environmenton MollieIDealPaymentPageSimulator: {}", transactionId);
+			response.sendError(500, "Invalid or unknown transaction id recieved  called in test environmenton MollieIDealPaymentPageSimulator");
+		} else {
+			request.setAttribute("reportURL", config.getMollieFetchModeLocalAfterPaymentReportURLParameter().getValue());
+			request.setAttribute("transactionId", transactionId);
+			logger.debug("MollieIDealPaymentPageSimulator: redirecting to simulated payment page with transaction id: {}", transactionId);
+			request.getRequestDispatcher("/WEB-INF/views/test/idealPaymentPage.jsp").forward(request, response);
+		}
 	}
 }

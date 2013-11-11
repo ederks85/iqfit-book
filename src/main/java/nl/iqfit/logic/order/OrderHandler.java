@@ -33,4 +33,13 @@ public interface OrderHandler {
 	 * @return The order data, after it has been persisted.
 	 */
 	OrderDataDTO updateOrder(OrderDataDTO orderData);
+
+	/**
+	 * Retrieve an {@code OrderDataDTO} by it's {@code OrderDataDTO#getTransactionId()}.
+	 * 
+	 * @param transactionId The {@code OrderDataDTO#getTransactionId()}
+	 * 
+	 * @return The found {@code OrderDataDTO} or null when not found.
+	 */
+	OrderDataDTO getOrderByTransactionID(String transactionId);
 }

@@ -2,6 +2,7 @@ package nl.iqfit.core.configuration;
 
 import java.net.URL;
 
+import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.ConfigurationUtils;
@@ -19,13 +20,13 @@ public class IQFitConfigurationFactory {
 
 		try {
 			DefaultConfigurationBuilder cf = new DefaultConfigurationBuilder(configLocation);
-			Configuration config = cf.getConfiguration(true);
-
 			cf.setThrowExceptionOnMissing(true);
 
-			logger.debug("Loaded configuration:\n{}", ConfigurationUtils.toString(config));
+			CombinedConfiguration config = cf.getConfiguration(true);
+			Configuration interpolatedConfig = config.interpolatedConfiguration();
+			logger.debug("Loaded interpolated configuration:\n{}", ConfigurationUtils.toString(interpolatedConfig));
 
-			return new IQFitConfig(config);
+			return new IQFitConfig(interpolatedConfig);
 		} catch (ConfigurationException e) {
 			final String message = "Error while building IQFit configuration";
 

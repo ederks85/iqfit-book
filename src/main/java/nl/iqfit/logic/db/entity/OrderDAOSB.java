@@ -1,6 +1,7 @@
 package nl.iqfit.logic.db.entity;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -31,6 +32,28 @@ public class OrderDAOSB implements OrderDAO {
 		final Query query = this.entityManager.createQuery("SELECT o FROM OrderEntity o WHERE o.orderNumber = :orderNumber");
 		query.setParameter("orderNumber", orderNumber);
 
-		return (OrderEntity)query.getSingleResult();
+		try {
+			return (OrderEntity)query.getSingleResult();
+		} catch (NoResultException e) {
+			logger.debug("No order found with order number: {}", orderNumber);
+			return null;
+		}
+	}
+
+	@Override
+	public OrderEntity getOrderByTransactionID(final String transactionId) {
+		Validate.notNull(transactionId, "transactionId is null.");
+
+		logger.debug("Looking up order with transaction id: {}", transactionId);
+
+		final Query query = this.entityManager.createQuery("SELECT o FROM OrderEntity o WHERE o.transactionId = :transactionId");
+		query.setParameter("transactionId", transactionId);
+
+		try {
+			return (OrderEntity)query.getSingleResult();
+		} catch (NoResultException e) {
+			logger.debug("No order found with  transaction id: {}", transactionId);
+			return null;
+		}
 	}
 }

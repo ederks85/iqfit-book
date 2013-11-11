@@ -15,6 +15,7 @@ import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.logic.db.entity.CustomerEntity;
 import nl.iqfit.logic.db.entity.OrderDAO;
 import nl.iqfit.logic.db.entity.OrderEntity;
+import nl.iqfit.logic.db.entity.OrderStatus;
 
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -87,5 +88,28 @@ public class OrderhandlerSB implements OrderHandler {
 		existingOrderData.setTransactionId(orderData.getTransactionId());
 
 		return orderData;
+	}
+
+	@Override
+	public OrderDataDTO getOrderByTransactionID(String transactionId) {
+		Validate.notEmpty(transactionId, "transactionId is null or empty.");
+
+		logger.info("Looking up order by with transaction id: {}", transactionId);
+
+		OrderEntity orderEntity = this.orderDAO.getOrderByTransactionID(transactionId);
+		if (orderEntity == null) {
+			logger.info("No order found with transaction id: {}", transactionId);
+			return null;
+		} else {
+			logger.info("Found order found with transaction id: {}", transactionId);
+
+			OrderDataDTO orderDataDTO = new OrderDataDTO();
+			orderDataDTO.setOrderNumber(orderEntity.getOrderNumber());
+			orderDataDTO.setOrderDate(orderEntity.getOrderDate());
+			orderDataDTO.setOrderStatus(orderEntity.getStatus());
+			orderDataDTO.setTransactionId(orderEntity.getTransactionId());
+
+			return orderDataDTO;
+		}
 	}
 }

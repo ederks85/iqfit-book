@@ -13,8 +13,9 @@
 			</header>
 			<div id="content">
 				<section>
-					<h2 class="content-title">IDeal payment simulator</h2>
-					<form action="">
+					<h2 class="content-title">IDeal payment simulator for transaction id: ${transactionId}</h2>
+					<form action="${reportURL}">
+						<input type="hidden" name="transaction_id" value="${transactionId}" />
 						<input type="submit" value="Confirm Payment" />
 					</form>
 				</section>

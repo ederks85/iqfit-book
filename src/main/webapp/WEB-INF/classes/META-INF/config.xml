@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration>
+<configuration systemProperties="">
+	<system />
 	<xml fileName="${sys:jboss.server.config.dir}/applications/iqfit-config.xml" />
 	<xml fileName="config/default-iqfit-config.xml" />
 </configuration>
