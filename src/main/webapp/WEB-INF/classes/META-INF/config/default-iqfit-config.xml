@@ -63,4 +63,10 @@
 			<paymentReturnTimeOutCheckDelay>2000</paymentReturnTimeOutCheckDelay> <!-- Number of milliseconds that is used between checks for a payment status -->
 		</mollie>
 	</payment>
+
+	<resources>
+		<ebook>
+			<ebookPath><![CDATA[/WEB-INF/files/ebook/iqfit-ebook-dummy.txt]]></ebookPath>
+		</ebook>
+	</resources>
 </application>

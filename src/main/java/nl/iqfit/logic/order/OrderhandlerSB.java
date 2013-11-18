@@ -85,12 +85,13 @@ public class OrderhandlerSB implements OrderHandler {
 		existingOrderData.setOrderDate(orderData.getOrderDate());
 		existingOrderData.setStatus(orderData.getOrderStatus());
 		existingOrderData.setTransactionId(orderData.getTransactionId());
+		existingOrderData.setDownloaded(orderData.isDownloaded());
 
 		return orderData;
 	}
 
 	@Override
-	public OrderDataDTO getOrderByTransactionID(String transactionId) {
+	public OrderDataDTO getOrderByTransactionID(final String transactionId) {
 		Validate.notEmpty(transactionId, "transactionId is null or empty.");
 
 		logger.info("Looking up order by with transaction id: {}", transactionId);
@@ -100,13 +101,38 @@ public class OrderhandlerSB implements OrderHandler {
 			logger.info("No order found with transaction id: {}", transactionId);
 			return null;
 		} else {
-			logger.info("Found order found with transaction id: {}", transactionId);
+			logger.info("Found order with transaction id: {}", transactionId);
 
 			OrderDataDTO orderDataDTO = new OrderDataDTO();
 			orderDataDTO.setOrderNumber(orderEntity.getOrderNumber());
 			orderDataDTO.setOrderDate(orderEntity.getOrderDate());
 			orderDataDTO.setOrderStatus(orderEntity.getStatus());
 			orderDataDTO.setTransactionId(orderEntity.getTransactionId());
+			orderDataDTO.setDownloaded(orderEntity.isDownloaded());
+
+			return orderDataDTO;
+		}
+	}
+
+	@Override
+	public OrderDataDTO getOrderByOrderNumber(final String orderNumber) {
+		Validate.notEmpty(orderNumber, "orderNumber is null or empty.");
+
+		logger.info("Looking up order by with order number: {}", orderNumber);
+
+		OrderEntity orderEntity = this.orderDAO.getOrderByOrderNumber(orderNumber);
+		if (orderEntity == null) {
+			logger.info("No order found with order number: {}", orderNumber);
+			return null;
+		} else {
+			logger.info("Found order with order number: {}", orderNumber);
+
+			OrderDataDTO orderDataDTO = new OrderDataDTO();
+			orderDataDTO.setOrderNumber(orderEntity.getOrderNumber());
+			orderDataDTO.setOrderDate(orderEntity.getOrderDate());
+			orderDataDTO.setOrderStatus(orderEntity.getStatus());
+			orderDataDTO.setTransactionId(orderEntity.getTransactionId());
+			orderDataDTO.setDownloaded(orderEntity.isDownloaded());
 
 			return orderDataDTO;
 		}

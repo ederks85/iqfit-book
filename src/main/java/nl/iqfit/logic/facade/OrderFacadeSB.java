@@ -32,4 +32,11 @@ public class OrderFacadeSB implements OrderFacade {
 
 		return this.orderHandler.getOrderByTransactionID(transactionId);
 	}
+
+	@Override
+	public OrderDataDTO getOrderByOrderNumber(String orderNumber) {
+		Validate.notEmpty(orderNumber, "orderNumber is null or empty.");
+
+		return this.orderHandler.getOrderByOrderNumber(orderNumber);
+	}
 }

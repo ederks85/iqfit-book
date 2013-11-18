@@ -55,6 +55,8 @@ public class IQFitConfig {
 	private final int 			paymentReturnTimeOutCounts;
 	private final int 			paymentReturnTimeOutCheckDelay;
 
+	private final String		iqFitEbookPath;
+
 	IQFitConfig(Configuration configuration) {
 
 		this.environment = configuration.getString("environment");
@@ -100,6 +102,8 @@ public class IQFitConfig {
 
 		this.paymentReturnTimeOutCounts = configuration.getInt("payment.mollie.paymentReturnTimeOutCounts");
 		this.paymentReturnTimeOutCheckDelay = configuration.getInt("payment.mollie.paymentReturnTimeOutCheckDelay");
+
+		this.iqFitEbookPath = configuration.getString("resources.ebook.ebookPath");
 	}
 
 	@Override
@@ -249,5 +253,9 @@ public class IQFitConfig {
 
 	public int getPaymentReturnTimeOutCheckDelay() {
 		return this.paymentReturnTimeOutCheckDelay;
+	}
+
+	public String getIqFitEbookPath() {
+		return this.iqFitEbookPath;
 	}
 }

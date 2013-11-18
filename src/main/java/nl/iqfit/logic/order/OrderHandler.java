@@ -42,4 +42,13 @@ public interface OrderHandler {
 	 * @return The found {@code OrderDataDTO} or null when not found.
 	 */
 	OrderDataDTO getOrderByTransactionID(String transactionId);
+
+	/**
+	 * Retrieve an {@code OrderDataDTO} by it's {@code OrderDataDTO#getOrderNumber()}.
+	 * 
+	 * @param orderNumber The {@code OrderDataDTO#getOrderNumber()}
+	 * 
+	 * @return The found {@code OrderDataDTO} or null when not found.
+	 */
+	OrderDataDTO getOrderByOrderNumber(String orderNumber);
 }

@@ -24,6 +24,7 @@ public class OrderDataDTO {
 	private Date orderDate;
 	private OrderStatus orderStatus;
 	private String transactionId;
+	private boolean downloaded;
 
 	public String getFirstName() {
 		return this.firstName;
@@ -88,6 +89,15 @@ public class OrderDataDTO {
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
+
+	public boolean isDownloaded() {
+		return this.downloaded;
+	}
+
+	public void setDownloaded(boolean downloaded) {
+		this.downloaded = downloaded;
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

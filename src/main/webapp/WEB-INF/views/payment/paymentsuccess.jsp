@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -15,7 +15,15 @@
 				<section>
 					<h2 class="content-title">Betalen</h2>
 					<p class="content-block">
-						Payment success
+						Payment success.
+						<c:choose>
+							<c:when test="${not empty orderNumber}">
+								Klik <a href="${contextPath}/ebook-download?orderNumber=${orderNumber}">hier</a> om het e-book te downloaden.
+							</c:when>
+							<c:otherwise>
+								Het is op dit moment niet mogelijk het e-boek te downloaden omdat het ordernummer niet is gevonden.
+							</c:otherwise>
+						</c:choose>
 					</p>
 				</section>
 				<aside>
