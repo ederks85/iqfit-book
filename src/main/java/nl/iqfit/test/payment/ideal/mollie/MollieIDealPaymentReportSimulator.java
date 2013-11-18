@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,12 +15,7 @@ import nl.iqfit.core.configuration.IQFitConfig;
 import nl.iqfit.core.configuration.IQFitConfigurationFactory;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +23,9 @@ import org.slf4j.LoggerFactory;
 public class MollieIDealPaymentReportSimulator extends HttpServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(MollieIDealPaymentReportSimulator.class);
+
+	@Inject
+	MollieDelayedIDealReportCallSimulator delayedCallSimulator;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,33 +46,8 @@ public class MollieIDealPaymentReportSimulator extends HttpServlet {
 		} else {
 			logger.debug("MollieIDealPaymentReportSimulator: calling IQFit idealPaymentReport for transaction ID: {}", transactionId);
 
-			try {
-				URIBuilder uriBuilder = new URIBuilder().
-					setScheme(config.getIqFitURLScheme()).
-					setHost(config.getIqFitURLHost()).
-					setPath(config.getIqFitIdealPaymentReportPath()).
-					setParameter(config.getMollieFetchModeTransactionIdParameter().getName(), transactionId);
-
-					final URI iqfitPaymentReportURL = uriBuilder.build();
-					logger.debug("URL for call to IQFit IDeal payment report: {}", iqfitPaymentReportURL.toString());
-
-				HttpGet get = new HttpGet(iqfitPaymentReportURL);
-
-				CloseableHttpClient httpClient = HttpClients.createDefault();
-				HttpResponse httpResponse = httpClient.execute(get);
-				logger.debug("HTTP Response {} from call to IQFit IDeal payment report for transaction ID: {}", httpResponse.getStatusLine().getStatusCode(), transactionId);
-
-				final int statusCode = httpResponse.getStatusLine().getStatusCode();
-				if (statusCode != HttpStatus.SC_OK) {
-					logger.error("Invalid HTTP Response " + statusCode + " from call to IQFit IDeal payment report for transaction ID: " + transactionId);
-					response.sendError(500);
-					return;
-				}
-			} catch (URISyntaxException e) {
-				logger.error("Error while building IQFit IDeal payment report path", e);
-				response.sendError(500);
-				return;
-			}
+			// Schedule a delayed call to the IQFit report location
+			this.delayedCallSimulator.setTimer(transactionId);
 
 			try {
 				URIBuilder responseUriBuilder = new URIBuilder().

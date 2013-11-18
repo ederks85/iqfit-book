@@ -50,7 +50,10 @@ public class PaymentReturnServlet extends HttpServlet {
 				return;
 			}
 
-			if (orderData.getOrderStatus() == OrderStatus.PAY_PEND) {
+			if (orderData.getOrderStatus() == OrderStatus.PAY_INIT) {
+				logger.info("Order with transaction ID {} has status {}. Redirecting to payment pending view. Client has been redirected before report service has been called.", transactionId, orderData.getOrderStatus());
+				request.getRequestDispatcher("/WEB-INF/views/payment/paymentpending.jsp").forward(request, response);
+			} else if (orderData.getOrderStatus() == OrderStatus.PAY_PEND) {
 				logger.info("Order with transaction ID {} has status {}. Redirecting to payment pending view.", transactionId, orderData.getOrderStatus());
 				request.getRequestDispatcher("/WEB-INF/views/payment/paymentpending.jsp").forward(request, response);
 			} else if (orderData.getOrderStatus() == OrderStatus.PAY_SUCC) {
