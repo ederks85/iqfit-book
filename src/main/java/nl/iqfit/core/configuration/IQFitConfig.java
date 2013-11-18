@@ -52,6 +52,8 @@ public class IQFitConfig {
 	private final NameValuePair	mollieCheckModeResponseStatusOptionsExpireParameter;
 	private final NameValuePair	mollieCheckModeResponseStatusOptionsCheckedBeforeParameter;
 
+	private final int 			paymentReturnTimeOutCounts;
+
 	IQFitConfig(Configuration configuration) {
 
 		this.environment = configuration.getString("environment");
@@ -94,6 +96,8 @@ public class IQFitConfig {
 		this.mollieCheckModeResponseStatusOptionsFailureParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.failureStatusOption[@paramValue]"));
 		this.mollieCheckModeResponseStatusOptionsExpireParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.expiredStatusOption[@paramValue]"));
 		this.mollieCheckModeResponseStatusOptionsCheckedBeforeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.checkedBeforeStatusOption[@paramValue]"));
+
+		this.paymentReturnTimeOutCounts = configuration.getInt("payment.mollie.paymentReturnTimeOutCounts");
 	}
 
 	@Override
@@ -235,5 +239,9 @@ public class IQFitConfig {
 
 	public NameValuePair getMollieCheckModeResponseStatusOptionsCheckedBeforeParameter() {
 		return this.mollieCheckModeResponseStatusOptionsCheckedBeforeParameter;
+	}
+
+	public int getPaymentReturnTimeOutCounts() {
+		return this.paymentReturnTimeOutCounts;
 	}
 }

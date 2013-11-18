@@ -58,6 +58,8 @@
 					</status>
 				</mode>
 			</modes>
+
+			<paymentReturnTimeOutCounts>10</paymentReturnTimeOutCounts>
 		</mollie>
 	</payment>
 </application>
