@@ -4,6 +4,20 @@
 		<meta charset="UTF-8">
 		<title>IQFit - Het slimme sporten</title>
 		<link rel="stylesheet" href="/css/style.css" />
+		<script type="text/javascript" src="${contextPath}/js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				setTimeout('submit()', ${paymentReturnTimeOutCheckDelay});
+			});
+
+			function submit() {
+				$('#cache').val(new Date().getTime());
+				$('#paymentStatusCheckForm').attr('action', '${contextPath}/paymentreturn');
+				$('#paymentStatusCheckForm').attr('method', 'get');
+				$('#paymentStatusCheckForm').submit();
+				$('#paymentStatusCheckForm').unbind('submit');
+			}
+		</script>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -15,7 +29,11 @@
 				<section>
 					<h2 class="content-title">Betalen</h2>
 					<p class="content-block">
-						Payment pending 
+						Payment pending
+						<form id="paymentStatusCheckForm">
+							<input type="hidden" name="transaction_id" value="${transactionId}" />
+							<input type="hidden" id="cache" name="cache" />
+						</form>
 					</p>
 				</section>
 				<aside>

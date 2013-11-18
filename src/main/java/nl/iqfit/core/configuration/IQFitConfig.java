@@ -53,6 +53,7 @@ public class IQFitConfig {
 	private final NameValuePair	mollieCheckModeResponseStatusOptionsCheckedBeforeParameter;
 
 	private final int 			paymentReturnTimeOutCounts;
+	private final int 			paymentReturnTimeOutCheckDelay;
 
 	IQFitConfig(Configuration configuration) {
 
@@ -98,6 +99,7 @@ public class IQFitConfig {
 		this.mollieCheckModeResponseStatusOptionsCheckedBeforeParameter = new BasicNameValuePair(configuration.getString("payment.mollie.modes.mode(3).status[@paramName]"), configuration.getString("payment.mollie.modes.mode(3).status.checkedBeforeStatusOption[@paramValue]"));
 
 		this.paymentReturnTimeOutCounts = configuration.getInt("payment.mollie.paymentReturnTimeOutCounts");
+		this.paymentReturnTimeOutCheckDelay = configuration.getInt("payment.mollie.paymentReturnTimeOutCheckDelay");
 	}
 
 	@Override
@@ -243,5 +245,9 @@ public class IQFitConfig {
 
 	public int getPaymentReturnTimeOutCounts() {
 		return this.paymentReturnTimeOutCounts;
+	}
+
+	public int getPaymentReturnTimeOutCheckDelay() {
+		return this.paymentReturnTimeOutCheckDelay;
 	}
 }

@@ -59,7 +59,8 @@
 				</mode>
 			</modes>
 
-			<paymentReturnTimeOutCounts>10</paymentReturnTimeOutCounts>
+			<paymentReturnTimeOutCounts>10</paymentReturnTimeOutCounts> <!-- Number of retries that are allowed to check the status of a payment before a timeout is declared -->
+			<paymentReturnTimeOutCheckDelay>2000</paymentReturnTimeOutCheckDelay> <!-- Number of milliseconds that is used between checks for a payment status -->
 		</mollie>
 	</payment>
 </application>

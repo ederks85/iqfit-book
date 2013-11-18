@@ -45,7 +45,7 @@ public class PaymentReturnRetryFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse)resp;
 
 		final String transactionId = request.getParameter("transaction_id");
-		logger.info("Received call on payment return with transaction id {}", transactionId);
+		logger.info("Received call on payment return filter with transaction id {}", transactionId);
 
 		if (this.config == null) {
 			logger.error("IQFit configuration is null in PaymentReturnRetryFilter");
@@ -80,8 +80,8 @@ public class PaymentReturnRetryFilter implements Filter {
 					chain.doFilter(request, response);
 				} else {
 					if (counter >= 0) {
-						counter = counter - 1;
 						logger.debug("{} PaymentReturnTimeOutCounts left for transaction ID: {}", counter, transactionId);
+						counter = counter - 1;
 						
 						request.getSession().setAttribute("paymentReturnTimeOutCounter", counter);
 						chain.doFilter(request, response);

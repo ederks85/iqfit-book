@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nl.iqfit.core.configuration.IQFitConfig;
+import nl.iqfit.core.configuration.IQFitConfigurationFactory;
 import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.logic.db.entity.OrderStatus;
 import nl.iqfit.logic.facade.OrderFacade;
@@ -33,6 +35,8 @@ public class PaymentReturnServlet extends HttpServlet {
 		final String transactionId = request.getParameter("transaction_id");
 		logger.info("Received call on payment return with transaction id {}", transactionId);
 
+		IQFitConfig config = new IQFitConfigurationFactory().getIQFitConfig();
+
 		if (StringUtils.isBlank(transactionId)) {
 			logger.warn("Received call on payment return with INVALID transaction id {}", transactionId);
 			response.sendError(500, "Invalid transaction_id");
@@ -50,10 +54,14 @@ public class PaymentReturnServlet extends HttpServlet {
 				return;
 			}
 
+			request.setAttribute("transactionId", transactionId);
+
 			if (orderData.getOrderStatus() == OrderStatus.PAY_INIT) {
 				logger.info("Order with transaction ID {} has status {}. Redirecting to payment pending view. Client has been redirected before report service has been called.", transactionId, orderData.getOrderStatus());
+				request.setAttribute("paymentReturnTimeOutCheckDelay", Integer.valueOf(config.getPaymentReturnTimeOutCheckDelay()));
 				request.getRequestDispatcher("/WEB-INF/views/payment/paymentpending.jsp").forward(request, response);
 			} else if (orderData.getOrderStatus() == OrderStatus.PAY_PEND) {
+				request.setAttribute("paymentReturnTimeOutCheckDelay", Integer.valueOf(config.getPaymentReturnTimeOutCheckDelay()));
 				logger.info("Order with transaction ID {} has status {}. Redirecting to payment pending view.", transactionId, orderData.getOrderStatus());
 				request.getRequestDispatcher("/WEB-INF/views/payment/paymentpending.jsp").forward(request, response);
 			} else if (orderData.getOrderStatus() == OrderStatus.PAY_SUCC) {
