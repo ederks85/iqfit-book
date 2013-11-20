@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+org.jboss.ide.eclipse.as.core.singledeployable.deployableList=iqfit-book/resources/default/standalone/deployments/postgresql-9.2-1003-jdbc4.jar\niqfit-book/resources/default/standalone/deployments/datasources\n
