@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.jboss.org/ironjacamar/schema"
+	xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://www.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+
+	<!-- see: http://docs.jboss.org/ironjacamar/userguide/1.0/en-US/html/deployment.html#deployingds_descriptor -->
+
+	<datasource jndi-name="java:jboss/datasources/jdbc/iqfit-ds" enabled="true" use-java-context="true" pool-name="iqfit">
+
+		<connection-url>jdbc:postgresql://localhost/iqfit</connection-url>
+		<driver>postgresql-9.2-1003-jdbc4.jar</driver>
+
+		<pool>
+			<min-pool-size>0</min-pool-size>
+			<max-pool-size>20</max-pool-size>
+		</pool>
+
+		<security>
+			<user-name>iqfit</user-name>
+			<password>1234</password>
+		</security>
+
+		<validation>
+			<check-valid-connection-sql>select 1</check-valid-connection-sql>
+		</validation>
+
+		<timeout>
+			<blocking-timeout-millis>30000</blocking-timeout-millis>
+			<idle-timeout-minutes>15</idle-timeout-minutes>
+		</timeout>
+
+		<statement>
+			<prepared-statement-cache-size>128</prepared-statement-cache-size>
+			<share-prepared-statements />
+		</statement>
+
+	</datasource>
+</datasources>

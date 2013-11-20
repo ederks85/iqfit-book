@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+org.jboss.ide.eclipse.as.core.singledeployable.deployableList=src/main/resources/default/standalone/deployments/postgresql-9.2-1003-jdbc4.jar\nsrc/main/resources/default/standalone/deployments/datasources\n
