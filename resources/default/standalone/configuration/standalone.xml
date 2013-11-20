@@ -31,9 +31,9 @@
 			default-virtual-server="default-host" native="false">
 			<connector name="http" protocol="HTTP/1.1" scheme="http"
 				socket-binding="http" />
-			<virtual-server name="www.iqfit.nl">
-				<alias name="local.iqfit.nl" />
-				<access-log pattern="%a %t %H %p %U %s " prefix="www.iqfit.nl.log-"
+			<virtual-server name="www.iqfit-boek.nl">
+				<alias name="local.iqfit-boek.nl" />
+				<access-log pattern="%a %t %H %p %U %s " prefix="www.iqfitboek.nl.log-"
 					rotate="true">
 					<directory path="access" />
 				</access-log>

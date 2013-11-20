@@ -4,5 +4,5 @@
 	version="7.0">
 
 	<context-root>/</context-root>
-	<virtual-host>www.iqfit.nl</virtual-host>
+	<virtual-host>www.iqfit-boek.nl</virtual-host>
 </jboss-web>

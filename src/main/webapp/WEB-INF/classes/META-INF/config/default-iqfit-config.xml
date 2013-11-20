@@ -4,7 +4,7 @@
 	<testEnvironment>true</testEnvironment>
 
 	<IQFitURLScheme>http</IQFitURLScheme>
-	<IQFitURLHost>local.iqfit.nl</IQFitURLHost>
+	<IQFitURLHost>local.iqfit-boek.nl</IQFitURLHost>
 	<IQFitURL><![CDATA[${IQFitURLScheme}://${IQFitURLHost}]]></IQFitURL>
 	<IQFitIdealPaymentReportPath><![CDATA[/idealpaymentreport]]></IQFitIdealPaymentReportPath>
 	<IQFitPaymentReturnPath><![CDATA[/paymentreturn]]></IQFitPaymentReturnPath>
@@ -12,7 +12,7 @@
 	<payment>
 		<mollie>
 			<mollieURLScheme>http</mollieURLScheme>
-			<mollieURLHost>local.iqfit.nl</mollieURLHost>
+			<mollieURLHost>local.iqfit-boek.nl</mollieURLHost>
 			<mollieURLPath><![CDATA[/xml/ideal]]></mollieURLPath>
 			<mollieURL><![CDATA[${payment.mollie.mollieURLScheme}://${payment.mollie.mollieURLHost}]]></mollieURL>
 
