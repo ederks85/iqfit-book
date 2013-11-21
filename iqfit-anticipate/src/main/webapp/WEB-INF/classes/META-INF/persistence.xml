@@ -10,8 +10,6 @@
 
 		<!-- <jar-file>lib/jar.jar</jar-file> -->
 
-		<class>nl.iqfit.logic.db.entity.CustomerEntity</class>
-		<class>nl.iqfit.logic.db.entity.OrderEntity</class>
 		<class>nl.iqfit.modules.emailregistration.logic.db.entity.EmailAddressEntity</class>
 
 		<properties>

@@ -30,6 +30,18 @@ WITH (
 );
 
 
+CREATE TABLE emailaddress (
+	id		bigserial NOT NULL,
+	emailaddress	character varying(100) NOT NULL,
+
+	PRIMARY KEY(id),
+	UNIQUE(emailaddress)
+)
+WITH (
+  OIDS=FALSE
+);
+
+
 CREATE ROLE role_iqfit
   NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 
@@ -51,6 +63,13 @@ ALTER TABLE orders
 GRANT ALL ON TABLE orders TO postgres;
 GRANT SELECT, UPDATE, INSERT, REFERENCES ON TABLE orders TO role_iqfit;
 
+
+ALTER TABLE emailaddress
+  OWNER TO postgres;
+GRANT ALL ON TABLE emailaddress TO postgres;
+GRANT SELECT, INSERT, REFERENCES ON TABLE emailaddress TO role_iqfit;
+
+
 ALTER TABLE customer_id_seq
   OWNER TO postgres;
 GRANT ALL ON TABLE customer_id_seq TO role_iqfit;
@@ -60,3 +79,8 @@ ALTER TABLE orders_id_seq
   OWNER TO postgres;
 GRANT ALL ON TABLE orders_id_seq TO postgres;
 GRANT ALL ON TABLE orders_id_seq TO role_iqfit;
+
+ALTER TABLE emailaddress_id_seq
+  OWNER TO postgres;
+GRANT ALL ON TABLE emailaddress_id_seq TO role_iqfit;
+REVOKE ALL ON TABLE emailaddress_id_seq FROM postgres;

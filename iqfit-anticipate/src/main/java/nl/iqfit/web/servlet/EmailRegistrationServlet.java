@@ -33,10 +33,8 @@ public class EmailRegistrationServlet extends HttpServlet {
 
 		try {
 			this.emailRegistrationFacade.registerEmailAddress(emailAddress);
-		} catch (EmailAlreadyExistsException e) {
-			logger.warn("Email address {} has already been registered");
-		} catch (EmailInvalidException e) {
-			logger.warn("Email address {} has invalid format");
+		} catch (EmailAlreadyExistsException | EmailInvalidException e) {
+			logger.warn(e.getMessage());
 		}
 	}
 }
