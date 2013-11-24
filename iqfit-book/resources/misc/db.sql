@@ -1,8 +1,8 @@
 CREATE TABLE customer (
-	id		bigserial NOT NULL,
-	firstname	character varying(50),
-	middlename	character varying(10),
-	surname		character varying(50),
+	id				bigserial NOT NULL,
+	firstname		character varying(50),
+	middlename		character varying(10),
+	surname			character varying(50),
 	emailaddress	character varying(100) NOT NULL,
 
 	PRIMARY KEY(id),
@@ -14,13 +14,13 @@ WITH (
 
 
 CREATE TABLE orders (
-	id		bigserial NOT NULL,
-	customer_id	bigint REFERENCES customer(id),
-	ordernumber	character varying(128) NOT NULL,
+	id				bigserial NOT NULL,
+	customer_id		bigint REFERENCES customer(id),
+	ordernumber		character varying(128) NOT NULL,
 	transaction_id	character varying(128),
-	orderdate	timestamp without time zone NOT NULL,
-	status		character varying(8) NOT NULL,
-	downloaded	boolean NOT NULL default 'false',
+	orderdate		timestamp without time zone NOT NULL,
+	status			character varying(8) NOT NULL,
+	downloaded		boolean NOT NULL default 'false',
 
 	PRIMARY KEY (id),
 	UNIQUE (ordernumber)
@@ -31,11 +31,13 @@ WITH (
 
 
 CREATE TABLE emailaddress (
-	id		bigserial NOT NULL,
+	id				bigserial NOT NULL,
+	uuid			character varying(128) NOT NULL,
 	emailaddress	character varying(100) NOT NULL,
 
 	PRIMARY KEY(id),
-	UNIQUE(emailaddress)
+	UNIQUE(emailaddress),
+	UNIQUE(uuid)
 )
 WITH (
   OIDS=FALSE

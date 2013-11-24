@@ -1,5 +1,9 @@
 package nl.iqfit.modules.emailregistration.logic.db.entity;
 
+import java.util.UUID;
+
+import javax.enterprise.util.Nonbinding;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +26,12 @@ import org.hibernate.validator.constraints.Email;
 public class EmailAddressEntity {
 
 	private long id;
-	private String emailAddress; 
+	private String emailAddress;
+	private String uniqueID;
+
+	public EmailAddressEntity() {
+		this.uniqueID = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+	}
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public long getId() {
@@ -41,6 +50,16 @@ public class EmailAddressEntity {
 
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+
+	@NotNull
+	@Column(name="uuid")
+	public String getUniqueID() {
+		return this.uniqueID;
+	}
+
+	public void setUniqueID(String uniqueID) {
+		this.uniqueID = uniqueID;
 	}
 
 	@Override
