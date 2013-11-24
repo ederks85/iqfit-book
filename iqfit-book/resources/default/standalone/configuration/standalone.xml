@@ -20,7 +20,7 @@
 				<level name="DEBUG" />
 			</logger>
 			<root-logger>
-				<level name="INFO" />
+				<level name="DEBUG" />
 				<handlers>
 					<handler name="CONSOLE" />
 					<handler name="FILE" />

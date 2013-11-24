@@ -2,7 +2,6 @@ package nl.iqfit.modules.emailregistration.logic.db.entity;
 
 import java.util.UUID;
 
-import javax.enterprise.util.Nonbinding;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
