@@ -22,11 +22,12 @@
 					<div id="newsletter">
 						<h3 class="content-title">Nieuwsbrief</h3>
 						<p  class="content-block">
-							Ben je geïnteresseerd om ontwikkelingen te volgen via de nieuwsbrief? Vul dan hier je emailadres in:
+							Ben je ge&iuml;nteresseerd om ontwikkelingen te volgen via de nieuwsbrief? Vul dan hier je emailadres in:
 						</p>
 						<form method="post" action="${contextPath}/email-registration">
 							<label id="newsletter-email-label" for="email-input">Email:</label>
-							<input id="email-input" name="emailAddress" type="email" required="required" />
+							<!-- <input id="email-input" name="emailAddress" type="email" required="required" />-->
+							<input id="email-input" name="emailAddress" />
 							<input type="submit" value="Submit" type="email"  />
 						</form>
 					</div>
