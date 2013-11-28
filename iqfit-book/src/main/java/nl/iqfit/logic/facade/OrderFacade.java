@@ -5,6 +5,7 @@ import javax.ejb.Stateless;
 
 import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.logic.order.OrderException;
+import nl.iqfit.modules.emailregistration.logic.core.EmailAlreadyExistsException;
 
 /**
  * Facade that handles retrieval, updating and persistence of orders.
@@ -22,9 +23,11 @@ public interface OrderFacade {
 	 * @param orderData	The data to create a new order with.
 	 * 
 	 * @return an {@code OrderDataDTO} that contains data associated with the newly placed order. Never null.
+	 * 
 	 * @throws OrderException when placing the new order fails.
+	 * @throws EmailAlreadyExistsException for now, one order per email is allowed.
 	 */
-	OrderDataDTO insertOrder(OrderDataDTO orderData) throws OrderException;
+	OrderDataDTO insertOrder(OrderDataDTO orderData) throws OrderException, EmailAlreadyExistsException;
 
 	/**
 	 * Update an existing order with the details provided.

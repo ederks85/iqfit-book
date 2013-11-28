@@ -7,4 +7,12 @@ import javax.ejb.Stateless;
 @Stateless
 public interface CustomerDAO {
 
+	/**
+	 * Retrieve a {@code CustomerEntity} by it's {@code CustomerEntity#getEmailAddress()} field.
+	 * 
+	 * @param emailAddress	The email address.
+	 * 
+	 * @return The found entity or null if not found.
+	 */
+	CustomerEntity getCustomerByEmailAddress(String emailAddress);
 }

@@ -4,6 +4,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import nl.iqfit.core.dto.OrderDataDTO;
+import nl.iqfit.modules.emailregistration.logic.core.EmailAlreadyExistsException;
 
 /**
  * Class that handles the operation of persisting and updating orders.
@@ -21,9 +22,11 @@ public interface OrderHandler {
 	 * @param orderData	The data to create a new order with.
 	 * 
 	 * @return an {@code OrderDataDTO} that contains data associated with the newly placed order. Never null.
+	 * 
 	 * @throws OrderException when placing the new order fails.
+	 * @throws EmailAlreadyExistsException for now, one order per email is allowed.
 	 */
-	OrderDataDTO placeNewOrder(OrderDataDTO orderData) throws OrderException;
+	OrderDataDTO placeNewOrder(OrderDataDTO orderData) throws OrderException, EmailAlreadyExistsException;
 
 	/**
 	 * Update an existing order with the details provided.

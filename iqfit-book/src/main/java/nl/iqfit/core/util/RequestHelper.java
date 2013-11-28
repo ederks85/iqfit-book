@@ -21,7 +21,7 @@ public class RequestHelper {
 
 		final String paramValue = request.getParameter(paramName);
 		if (paramValue == null) {
-			throw new IllegalArgumentException("Requestparameter " + paramName + " was not found.");
+			throw new IllegalArgumentException("Request parameter " + paramName + " was not found.");
 		}
 		return paramValue;
 	}

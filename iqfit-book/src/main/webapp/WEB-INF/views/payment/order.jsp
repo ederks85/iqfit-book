@@ -14,6 +14,7 @@
 			<div id="content">
 				<section>
 					<h2 class="content-title">Betalen</h2>
+					<div class="error">${error}</div>
 					<p>
 						Order overzicht hier!
 					</p>
@@ -23,25 +24,25 @@
 					<form id="selectBankForm" name="selectBankForm" method="post" action="/placeorder">
 						<br class="clearBoth" />
 						<label for="firstName">Voornaam:</label>
-						<input class="formField" type="text" id="firstName" name="firstName" />
+						<input class="formField" type="text" id="firstName" name="firstName" value="${firstName}" />
 						<br class="clearBoth" />
 
 						<label for="middleName">Tussenvoegsel:</label>
-						<input class="formField" type="text" id="middleName" name="middleName" />
+						<input class="formField" type="text" id="middleName" name="middleName" value="${middleName}" />
 						<br class="clearBoth" />
 
 						<label for="surName">Achternaam:</label>
-						<input class="formField" type="text" id="surName" name="surName" />
+						<input class="formField" type="text" id="surName" name="surName" ${surName} />
 						<br class="clearBoth" />
 
 						<label for="emailAddress">Email adres:</label>
-						<input class="formField" type="email" id="emailAddress" name="emailAddress" />
+						<input class="formField" type="email" id="emailAddress" name="emailAddress" value="${emailAddress}" />
 						<br class="clearBoth" />
 
 						<label for="bankList">Kies uw bank:</label>
 						<select id="bankList" name="bankList">
 							<c:forEach var="bank" items="${bankList}">
-								<option value="${bank.bankId}">${bank.bankName}</option>
+								<option value="${bank.bankId}" <c:if test="${bank.bankId eq bankList}">selected</c:if>>${bank.bankName}</option>
 							</c:forEach>
 						</select>
 						<br class="clearBoth" />

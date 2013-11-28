@@ -17,6 +17,7 @@ import nl.iqfit.logic.facade.OrderFacade;
 import nl.iqfit.logic.facade.PaymentFacade;
 import nl.iqfit.logic.order.OrderException;
 import nl.iqfit.logic.payment.PaymentException;
+import nl.iqfit.modules.emailregistration.logic.core.EmailAlreadyExistsException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,18 @@ public class PlaceOrderServlet extends HttpServlet {
 			final String message = "Error while placing new order";
 
 			logger.error(message, e);
-			throw new ServletException(message, e);
+			response.sendError(500);
+		} catch (EmailAlreadyExistsException e) {
+			logger.warn(e.getMessage());
+
+			request.setAttribute("firstName", firstName);
+			request.setAttribute("middleName", middleName);
+			request.setAttribute("surName", surName);
+			request.setAttribute("emailAddress", emailAddress);
+			request.setAttribute("bankList", chosenBank);
+			request.setAttribute("error", "Dit email adres is al in gebruik. Probeer een andere email adres of neem contact met ons op."); //FIXME resource bundle voor errors definiëren?
+			request.getRequestDispatcher("/orderpage").forward(request, response);
+			return;
 		}
 
 		// prepare the IDeal payment at the payment provider.

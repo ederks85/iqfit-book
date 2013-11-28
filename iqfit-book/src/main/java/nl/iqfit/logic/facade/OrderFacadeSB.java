@@ -7,13 +7,14 @@ import org.apache.commons.lang.Validate;
 import nl.iqfit.core.dto.OrderDataDTO;
 import nl.iqfit.logic.order.OrderException;
 import nl.iqfit.logic.order.OrderHandler;
+import nl.iqfit.modules.emailregistration.logic.core.EmailAlreadyExistsException;
 
 public class OrderFacadeSB implements OrderFacade {
 
 	@Inject OrderHandler orderHandler;
 
 	@Override
-	public OrderDataDTO insertOrder(final OrderDataDTO orderData) throws OrderException {
+	public OrderDataDTO insertOrder(final OrderDataDTO orderData) throws OrderException, EmailAlreadyExistsException {
 		Validate.notNull(orderData, "OrderData is null.");
 
 		return this.orderHandler.placeNewOrder(orderData);

@@ -12,9 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import nl.iqfit.core.dto.OrderDataDTO;
+import nl.iqfit.logic.db.entity.CustomerDAO;
 import nl.iqfit.logic.db.entity.CustomerEntity;
 import nl.iqfit.logic.db.entity.OrderDAO;
 import nl.iqfit.logic.db.entity.OrderEntity;
+import nl.iqfit.modules.emailregistration.logic.core.EmailAlreadyExistsException;
 
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -27,12 +29,13 @@ public class OrderhandlerSB implements OrderHandler {
 	private static final Logger logger = LoggerFactory.getLogger(OrderhandlerSB.class);
 
 	@Inject OrderDAO orderDAO;
+	@Inject CustomerDAO customerDAO;
 
 	@PersistenceContext(unitName="iqfit-pu")
 	private EntityManager entityManager;
 
 	@Override
-	public OrderDataDTO placeNewOrder(final OrderDataDTO orderData) throws OrderException {
+	public OrderDataDTO placeNewOrder(final OrderDataDTO orderData) throws OrderException, EmailAlreadyExistsException {
 		Validate.notNull(orderData, "OrderData is null.");
 
 		logger.info("Persisting new order: {}", orderData);
@@ -45,6 +48,12 @@ public class OrderhandlerSB implements OrderHandler {
 		orderData.setOrderDate(new Date());
 
 		Validate.notNull(orderData, "OrderData is null.");
+
+		if (this.customerDAO.getCustomerByEmailAddress(orderData.getEmailAddress()) != null) {
+			final String message = "Cannot place order because customer with email " + orderData.getEmailAddress() + "already exists.";
+			logger.warn(message);
+			throw new EmailAlreadyExistsException(message);
+		}
 
 		CustomerEntity customer = new CustomerEntity();
 		customer.setFirstName(orderData.getFirstName());
